@@ -27,5 +27,5 @@ export interface IQuestion {
 
 export interface IAlternative {
     detail: string
-    isCorrect: boolean
+    isCorrect?: boolean
 }

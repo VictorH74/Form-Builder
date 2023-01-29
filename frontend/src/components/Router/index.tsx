@@ -2,13 +2,13 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import Authenticate from "../../pages/Authenticate";
-import FormList from "../../pages/FormList";
-import Home from "../../pages/Home";
-import AddForm from "../../pages/FormList/components/AddForm";
+import Authenticate from "@/pages/Authenticate";
+import FormList from "@/pages/FormList";
+import Home from "@/pages/Home";
+import AddForm from "@/pages/FormList/components/AddForm";
 import LoggedLayout from "../Layout";
-import Themes from "../../pages/Themes";
-import About from "../../pages/About";
+import Themes from "@/pages/Themes";
+import About from "@/pages/About";
 
 
 const router = createBrowserRouter([

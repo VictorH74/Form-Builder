@@ -10,6 +10,11 @@ export const Container = styled.div`
     flex-direction: column;
 `;
 
+export const QuestionsContainer = styled.div`
+    border: 1px solid purple;
+    padding: 10px;
+`;
+
 export const TitleInput = styled.input`
     color: white;
     font-size: 1.3rem;
