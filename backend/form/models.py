@@ -6,6 +6,11 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+class Alternative(models.Model):
+    detail = models.CharField(max_length=200)
+    is_correct = models.BooleanField(default=False)
+    
+    
 class Form(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
@@ -18,15 +23,15 @@ class Question(PolymorphicModel):
     question_text = models.CharField(max_length=200)
 
 
-class MultipleChooseQuestion(Question):
+class MultipleChoice(Question):
     type = models.CharField(max_length=3, default="MC")
 
 
-class TextQuestion(Question):
+class FillBlank(Question):
     type = models.CharField(max_length=3, default="TX")
+    alternatives = models.ManyToManyField(Alternative)
 
-
-class Alternative(models.Model):
-    question = models.ForeignKey("MultipleChooseQuestion", on_delete=models.CASCADE, related_name="alternatives")
-    detail = models.CharField(max_length=200)
-    is_correct = models.BooleanField(default=False)
+    
+class TrueFalse(Question):
+    type = models.CharField(max_length=3, default="TF")
+    alternatives = models.ManyToManyField(Alternative)

@@ -10,16 +10,16 @@ class AlternativeInline(admin.TabularInline):
     extra = 2
 
 
-class MultipleChooseQuestionInline(admin.TabularInline):
-    model = MultipleChooseQuestion
+class MultipleChoiceInline(admin.TabularInline):
+    model = MultipleChoice
     extra = 0
     inlines = [AlternativeInline, ]
     readonly_fields = ("type", )
     fields = [("question_number", "type"), "question_text"]
 
 
-class TextQuestionInline(admin.TabularInline):
-    model = TextQuestion
+class FillBlankInline(admin.TabularInline):
+    model = FillBlank
     extra = 0
     readonly_fields = ("type", )
     fields = [("question_number", "type"), "question_text"]
@@ -37,7 +37,7 @@ class FormAdmin(admin.ModelAdmin):
 
     fields = ['created_by', 'title', ]
 
-    inlines = [MultipleChooseQuestionInline, TextQuestionInline]
+    inlines = [MultipleChoiceInline, FillBlankInline]
 
     def add_view(self, request, form_url='', extra_context=None):
         try:
@@ -56,5 +56,5 @@ class FormAdmin(admin.ModelAdmin):
 
 admin.site.register(Form, FormAdmin)
 admin.site.register(Alternative)
-admin.site.register(MultipleChooseQuestion)
-admin.site.register(TextQuestion)
+admin.site.register(MultipleChoice)
+admin.site.register(FillBlank)

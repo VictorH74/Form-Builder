@@ -1,13 +1,11 @@
 autopep8
 Django==4.1.*
-djangorestframework
-djangorestframework-simplejwt
-djangorestframework-camel-case
-django-rest-polymorphic
 django-cors-headers
 django-filter
 django-url-filter
 django-guardian
 markdown
+graphene-django
+django-graphql-jwt
 drf-yasg
 python-dotenv
