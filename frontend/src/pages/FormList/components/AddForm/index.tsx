@@ -1,9 +1,9 @@
-import React, { useState, ChangeEvent } from "react"
-import { Backward, Container, QuestionsContainer, TitleInput } from "./styles"
+import React, { useState, useCallback, ChangeEvent } from "react"
+import { Backward, Container, NewForm, QuestionComponents, QuestionsContainer, TitleInput } from "./styles"
 import { IAddForm, IQuestion } from "../../types"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import TextQuestion from "./components/TextQuestion";
-import MultipleChoose from "./components/MutipleChoose";
+import MultipleChoice from "./components/MutipleChoice";
+import FillBlank from "./components/FillBlank";
 
 const AddForm = () => {
     const [formData, setFormData] = useState<IAddForm>({
@@ -31,7 +31,7 @@ const AddForm = () => {
         setFormData(prev => ({ ...prev, [name]: value }))
     }
 
-    const addQuestion = () => {
+    const addQuestion = useCallback(() => {
         let type = "TX"
         let keys = ["questionNumber", "questionText", "type", "alternatives"]
 
@@ -45,30 +45,29 @@ const AddForm = () => {
 
         let prevQuestions = formData.questions
         setFormData(prev => ({ ...prev, questions: [...prevQuestions, question] }))
+    }, [formData])
 
-    }
-
-    const setQuestionText = (index: number, value: string) => {
+    const setQuestionText = useCallback((index: number, value: string) => {
         let question: IQuestion = { ...formData.questions[index], questionText: value }
 
         let questions = formData.questions.map((prevQuestion, i) => i === index ? question : prevQuestion)
 
         setFormData(prev => ({ ...prev, questions }))
-    }
+    }, [formData])
 
-    const setAlterDetail = (QuestionIndex: number, alternativeIndex: number, value: string) => {
+    const setAlterDetail = useCallback((QuestionIndex: number, alternativeIndex: number, value: string) => {
         let question = formData.questions[QuestionIndex]
 
         if (!question.alternatives) return;
 
-        question.alternatives = question.alternatives.map((alt, i) => i === alternativeIndex ? {...alt, detail: value} : alt)
+        question.alternatives = question.alternatives.map((alt, i) => i === alternativeIndex ? { ...alt, detail: value } : alt)
 
         let questions = formData.questions.map((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
 
         setFormData(prev => ({ ...prev, questions }))
-    }
+    }, [formData])
 
-    const setCorrectAlternative = (QuestionIndex: number, alternativeIndex: number) => {
+    const setCorrectAlternative = useCallback((QuestionIndex: number, alternativeIndex: number) => {
         let question = formData.questions[QuestionIndex]
 
         if (!question.alternatives) return;
@@ -78,9 +77,9 @@ const AddForm = () => {
         let questions = formData.questions.map((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
 
         setFormData(prev => ({ ...prev, questions }))
-    }
+    }, [formData])
 
-    const addAlternative = (index: number) => {
+    const addAlternative = useCallback((index: number) => {
         let newQuestion = formData.questions[index]
 
         if (!newQuestion.alternatives) return;
@@ -90,37 +89,42 @@ const AddForm = () => {
         let questions = formData.questions.map((prevQuestion, i) => i === index ? newQuestion : prevQuestion)
 
         setFormData(prev => ({ ...prev, questions }))
-    }
+    }, [formData])
 
     return (
         <Container>
             <Backward to="/my-forms" ><ArrowBackIcon sx={{ fontSize: 50 }} /></Backward>
-            <TitleInput type="text" name="title" placeholder="Title" onChange={updateFormData} value={formData.title} />
-            <QuestionsContainer>
-                {
-                    formData.questions.map((q, i) =>
-                        q.type === "TX" ?
-                            (<TextQuestion
-                                key={q.questionNumber}
-                                index={i}
-                                question={q}
-                                setQuestionText={setQuestionText}
-                            />)
-                            : q.type === "MC" ?
-                                (<MultipleChoose
-                                    key={q.questionNumber}
-                                    index={i}
-                                    addAlternative={addAlternative}
-                                    setCorrectAlternative={setCorrectAlternative}
-                                    setQuestionText={setQuestionText}
-                                    setAlterDetail={setAlterDetail}
-                                    question={q}
-                                />)
-                                : "")
-                }
-                <button onClick={addQuestion}>Add Question</button>
-            </QuestionsContainer>
+                <QuestionComponents>
+                    Components
+                </QuestionComponents>
+                <NewForm>
+                    <TitleInput type="text" name="title" placeholder="Title" onChange={updateFormData} value={formData.title} />
+                    <QuestionsContainer>
 
+                        {
+                            formData.questions.map((q, i) =>
+                                q.type === "TX" ?
+                                    (<FillBlank
+                                        key={q.questionNumber}
+                                        index={i}
+                                        question={q}
+                                        setQuestionText={setQuestionText}
+                                    />)
+                                    : q.type === "MC" ?
+                                        (<MultipleChoice
+                                            key={q.questionNumber}
+                                            index={i}
+                                            addAlternative={addAlternative}
+                                            setCorrectAlternative={setCorrectAlternative}
+                                            setQuestionText={setQuestionText}
+                                            setAlterDetail={setAlterDetail}
+                                            question={q}
+                                        />)
+                                        : "")
+                        }
+                        <button onClick={addQuestion}>Add Question</button>
+                    </QuestionsContainer>
+                </NewForm>
         </Container>
     )
 }

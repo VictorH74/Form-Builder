@@ -2,13 +2,13 @@ import React from "react"
 import { IQuestion } from "@/pages/FormList/types"
 import { Container, Label } from "../styles"
 
-interface ITextQuestion {
+interface IFillBlank {
     index: number
     question: IQuestion
     setQuestionText: (index: number, value: string) => void
 }
 
-const TextQuestion: React.FC<ITextQuestion> = ({ index, question, setQuestionText }) => {
+const FillBlank: React.FC<IFillBlank> = ({ index, question, setQuestionText }) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target
@@ -27,4 +27,4 @@ const TextQuestion: React.FC<ITextQuestion> = ({ index, question, setQuestionTex
     )
 }
 
-export default TextQuestion
+export default FillBlank

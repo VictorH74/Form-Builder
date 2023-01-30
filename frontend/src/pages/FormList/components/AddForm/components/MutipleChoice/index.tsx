@@ -4,7 +4,7 @@ import Checkbox from "@/components/CheckBox"
 import { IQuestion } from "@/pages/FormList/types"
 import { Alternatives, AlternativesContainer, Container, Label } from "../styles"
 
-interface IMultipleChoose {
+interface IMultipleChoice {
     index: number
     question: IQuestion
     addAlternative: (index: number) => void
@@ -13,7 +13,7 @@ interface IMultipleChoose {
     setAlterDetail: (QuestionIndex: number, alternativeIndex: number, value: string) => void
 }
 
-const MultipleChoose: React.FC<IMultipleChoose> = ({ index, question, addAlternative, setCorrectAlternative, setQuestionText, setAlterDetail }) => {
+const MultipleChoice: React.FC<IMultipleChoice> = ({ index, question, addAlternative, setCorrectAlternative, setQuestionText, setAlterDetail }) => {
 
     const handleChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target
@@ -54,4 +54,4 @@ const MultipleChoose: React.FC<IMultipleChoose> = ({ index, question, addAlterna
     )
 }
 
-export default MultipleChoose
+export default MultipleChoice

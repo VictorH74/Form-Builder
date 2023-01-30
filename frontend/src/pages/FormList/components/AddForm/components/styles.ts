@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    border: 1px solid pink;
     position: relative;
 
     & .answer-spn {
@@ -12,7 +11,6 @@ export const Container = styled.div`
 `;
 
 export const AlternativesContainer = styled.div`
-    border: 1px solid tomato;
     padding-left: 40px;
 `;
 

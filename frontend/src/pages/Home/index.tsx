@@ -1,11 +1,12 @@
 import { useDrag, useDrop } from 'react-dnd'
 import React, { useRef } from 'react'
+// import { ItemTypes } from './Constants'
 
 
 function Home() {
     return (
         <div>
-            <div className="draggables">
+            {/* <div className="draggables">
                 <Draggable id='1' >primeiro</Draggable>
                 <Draggable id='2' >segundo</Draggable>
                 <Draggable id='3' >terceiro</Draggable>
@@ -15,10 +16,40 @@ function Home() {
                 <Droppable onDrop={() => {}} >
                     sla
                 </Droppable>
-            </div>
+            </div> */}
         </div>
     )
 }
+
+function DraggableComponent(props) {
+    const [collected, drag, dragPreview] = useDrag(() => ({
+        type,
+        item: { id }
+    }))
+    return collected.isDragging ? (
+        <div ref={dragPreview} />
+    ) : (
+        <div ref={drag} {...collected}>
+            ...
+        </div>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 interface DraggableProps {
     id: string

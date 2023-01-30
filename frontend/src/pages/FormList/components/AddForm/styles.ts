@@ -2,12 +2,23 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
-    max-width: 700px;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid purple;
     display: flex;
-    flex-direction: column;
+    gap: 10px;
+    /* flex-direction: row; */
+    /* align-content: space-between; */
+`;
+
+export const NewForm = styled.div`
+    flex: 1 1 auto;
+    border: 1px solid tomato;
+`;
+
+export const QuestionComponents = styled.div`
+    border: 1px solid tomato;
+    width: 300px;
 `;
 
 export const QuestionsContainer = styled.div`
@@ -21,7 +32,7 @@ export const TitleInput = styled.input`
     border: none;
     background-color: transparent;
     padding: 10px;
-    width: fit-content;
+    width: 100%;
 
 `;
 
