@@ -1,8 +1,6 @@
 # project
 /diagrams
-
-# backend
-env
+.env
 
 # vs code
 .history
