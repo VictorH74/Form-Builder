@@ -1,88 +1,107 @@
+import React, { useState, useRef, useCallback } from 'react';
+import { useSpring, animated } from '@react-spring/web';
+import { Actions, Container, Form, Title } from './styles';
+import Input from './components/Input';
 
-import React, { useState } from 'react';
-import { CSSTransition } from 'react-transition-group';
-import './styles.css';
+interface FormData {
+    name?: string;
+    username?: string;
+    email?: string;
+    login?: string;
+    password: string;
+}
 
-function Authenticate() {
-    const [formType, setFormType] = useState('login');
+const Authentication: React.FC = () => {
+    const [formData, setFormData] = useState<FormData>({
+        login: '',
+        password: '',
+    });
 
-    function handleFormTypeChange(newType: string) {
-        setFormType(newType);
-    }
+    const [isSignUp, setIsSignUp] = useState(false);
+    const [flip, setFlip] = useState(false);
+
+    const cardRef = useRef<HTMLDivElement>(null);
+
+    const props = useSpring({
+        transform: `perspective(600px) rotateY(${flip ? 360 : 0}deg)`,
+        config: { mass: 5, tension: 500, friction: 80 },
+        from: { transform: 'perspective(600px) rotateY(0deg)' },
+    });
+
+    const handleFlip = () => {
+        setFlip(!flip);
+        setTimeout(() => setIsSignUp(!isSignUp), 200)
+    };
+
+    const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
+    }, [formData])
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        console.log({
+            isSignUp,
+            ...formData
+        });
+    };
 
     return (
-        <div className="card-container">
-            <CSSTransition
-                in={formType === 'login'}
-                timeout={300}
-                classNames="card"
-                unmountOnExit
+        <Container>
+            <animated.div
+                className="card"
+                style={props}
+                ref={cardRef}
             >
-                <LoginForm onFormTypeChange={handleFormTypeChange} />
-            </CSSTransition>
-            <CSSTransition
-                in={formType === 'signup'}
-                timeout={300}
-                classNames="card"
-                unmountOnExit
-            >
-                <SignupForm onFormTypeChange={handleFormTypeChange} />
-            </CSSTransition>
-        </div>
+                <Form onSubmit={handleSubmit}>
+
+                    <Title children={isSignUp ? 'Sign Up' : 'Login'} />
+
+                    {
+                        isSignUp ? (
+                            <>
+                                <Input label="Name" name="name"
+                                    value={formData.name || ""}
+                                    onChange={handleChange}
+                                />
+                                <Input label="Username" name="username"
+                                    value={formData.username || ""}
+                                    onChange={handleChange}
+                                />
+                                <Input label="Email" name="email"
+                                    type="email"
+                                    value={formData.email || ""}
+                                    onChange={handleChange}
+                                />
+                            </>
+
+                        ) : (
+                            <Input label="Login" name="login" onChange={handleChange} value={formData.login || ""} />
+
+                        )
+                    }
+                    <Input
+                        label="Password"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                    />
+
+
+                    <Actions>
+                        <button type="submit" >
+                            {isSignUp ? 'Sign Up' : 'Login'}
+                        </button>
+                        <button type="button" onClick={handleFlip} >
+                            {isSignUp ? 'Login' : 'Sign Up'}
+                        </button>
+                    </Actions>
+
+                </Form>
+            </animated.div>
+        </Container>
     );
-}
+};
 
-interface IFormProps {
-    onFormTypeChange: (type: string) => void
-}
-
-const LoginForm: React.FC<IFormProps> = ({ onFormTypeChange }) => {
-    return (
-        <form>
-            <h2>Login</h2>
-            <label>
-                Email
-                <input type="email" name="email" />
-            </label>
-            <br />
-            <label>
-                Senha
-                <input type="password" name="password" />
-            </label>
-            <br />
-            <button type="submit">Entrar</button>
-            <button type="button" onClick={() => onFormTypeChange('signup')}>
-                Cadastrar
-            </button>
-        </form>
-    );
-}
-
-const SignupForm: React.FC<IFormProps> = ({ onFormTypeChange }) => {
-    return (
-        <form>
-            <h2>Cadastrar</h2>
-            <label>
-                Nome completo
-                <input type="text" name="name" />
-            </label>
-            <br />
-            <label>
-                Email
-                <input type="email" name="email" />
-            </label>
-            <br />
-            <label>
-                Senha
-                <input type="password" name="password" />
-            </label>
-            <br />
-            <button type="submit">Cadastrar</button>
-            <button type="button" onClick={() => onFormTypeChange('login')}>
-                Voltar para Login
-            </button>
-        </form>
-    );
-}
-
-export default Authenticate
+export default Authentication;

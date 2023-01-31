@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import Header from "./components/Header";
 import { Container, Content, ScrollTopBtn } from "./styles";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import NavBar from "./components/Navbar";
+
+const loginRequiredPath = [
+    "my-forms",
+]
 
 const LoggedLayout = () => {
     const [showNav, setShowNav] = useState(false)
     const [showScrollTopBtn, setShowBtn] = useState(false)
+
+    let location = useLocation();
 
     const toggleShow = () => setShowNav(!showNav)
 
@@ -21,6 +27,10 @@ const LoggedLayout = () => {
         document.addEventListener("scroll", handleScroll)
         return () => document.removeEventListener("scroll", handleScroll)
     }, [])
+
+    if (loginRequiredPath.includes(location.pathname.split("/")[1]) ) {
+        return <Navigate to="authentication" replace />
+    }
 
     return (
         <>

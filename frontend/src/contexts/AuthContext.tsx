@@ -11,9 +11,9 @@ interface IProviderValue {
     user?: IUser
 }
 
-const AuthContext = createContext<IProviderValue | undefined>(undefined)
+export const AuthContext = createContext<IProviderValue | undefined>(undefined)
 
-const AuthProvider: React.FC<{ children: JSX.Element }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: JSX.Element }> = ({ children }) => {
     const [user, setUser] = useState<IUser | undefined>(undefined)
 
     useEffect(() => {
@@ -33,5 +33,3 @@ const AuthProvider: React.FC<{ children: JSX.Element }> = ({ children }) => {
         </AuthContext.Provider>
     )
 }
-
-export default AuthProvider

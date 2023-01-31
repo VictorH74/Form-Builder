@@ -5,7 +5,7 @@ import {
 import { GlobalStyles } from './global/styles/globalStyles';
 
 import Router from './components/Router';
-import AuthProvider from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 
 const queryClient = new QueryClient()
 
