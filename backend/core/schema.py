@@ -11,12 +11,18 @@ class UserType(DjangoObjectType):
         model = User
         
 class Query(g.ObjectType):
+    me = g.Field(UserType)
     user = g.Field(UserType, id=g.Int())
     users = g.List(UserType)
     
     @login_required
-    def resolve_user(self, info, id):
+    def resolve_me(self, info):
         user = info.context.user
+        return user
+    
+    @login_required
+    def resolve_user(self, info, id):
+        user = User.objects.get(id=id)
         return user
     
     @login_required

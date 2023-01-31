@@ -2,6 +2,11 @@ import React, { useState, useRef, useCallback } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { Actions, Container, Form, Title } from './styles';
 import Input from './components/Input';
+import { useMutation } from 'graphql-hooks';
+import { LOGIN_MUTATION } from './graphql_operators';
+import useGraphQlClient from '@/hooks/UseGraphQlClient';
+import { useAuth } from '@/hooks/UseAuth';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 interface FormData {
     name?: string;
@@ -16,11 +21,17 @@ const Authentication: React.FC = () => {
         login: '',
         password: '',
     });
+    const [fetchToken, { loading, error, data }] = useMutation(LOGIN_MUTATION)
+    const client = useGraphQlClient()
+    const userCtx = useAuth();
 
     const [isSignUp, setIsSignUp] = useState(false);
     const [flip, setFlip] = useState(false);
 
     const cardRef = useRef<HTMLDivElement>(null);
+
+    const navigate = useNavigate();
+
 
     const props = useSpring({
         transform: `perspective(600px) rotateY(${flip ? 360 : 0}deg)`,
@@ -38,13 +49,29 @@ const Authentication: React.FC = () => {
         setFormData({ ...formData, [name]: value });
     }, [formData])
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log({
-            isSignUp,
-            ...formData
-        });
+
+        if (isSignUp) return console.log(formData)
+        else {
+            if (!client || !userCtx) return alert("Erro ao tentar logar!");
+
+            let { login, password } = formData
+            
+            const res = await fetchToken({
+                variables: { login, password }
+            })
+            let { token } = res.data.tokenAuth
+
+            localStorage.setItem("form_builder-token", token);
+            client.setHeader('Authorization', `JWT ${token}`)
+
+            let user = await userCtx.fetchUser()
+            userCtx.setUser(user.data.me)
+        }
     };
+
+    if (userCtx?.authenticated) return <Navigate to="/my-forms/" replace />
 
     return (
         <Container>

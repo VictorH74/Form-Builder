@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import { Container, Content, ScrollTopBtn } from "./styles";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import NavBar from "./components/Navbar";
+import { useAuth } from "@/hooks/UseAuth";
 
 const loginRequiredPath = [
     "my-forms",
@@ -11,6 +12,7 @@ const loginRequiredPath = [
 const LoggedLayout = () => {
     const [showNav, setShowNav] = useState(false)
     const [showScrollTopBtn, setShowBtn] = useState(false)
+    const userCtx = useAuth()
 
     let location = useLocation();
 
@@ -28,7 +30,7 @@ const LoggedLayout = () => {
         return () => document.removeEventListener("scroll", handleScroll)
     }, [])
 
-    if (loginRequiredPath.includes(location.pathname.split("/")[1]) ) {
+    if (loginRequiredPath.includes(location.pathname.split("/")[1]) && !userCtx?.authenticated) {
         return <Navigate to="authentication" replace />
     }
 
