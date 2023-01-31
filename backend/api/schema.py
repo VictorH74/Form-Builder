@@ -1,11 +1,12 @@
 import graphene as g
 import graphql_jwt
+import form.schema as f
 import core.schema as u
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class Query(u.Query):
+class Query(u.Query, f.Query):
     pass
     
 class Mutation(g.ObjectType):

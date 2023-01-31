@@ -1,16 +1,44 @@
 import graphene as g
-import models as m
+from .models import *
 from graphene_django import DjangoObjectType
 from graphql_jwt.decorators import login_required
+from django.db.models import Prefetch
+
+
+# class FormType(DjangoObjectType):
+#     class Meta:
+#         model = Form
+        
+class QuestionType(DjangoObjectType):
+    class Meta:
+        model = Question
+
+# class MultipleChoiceType(DjangoObjectType):
+#     class Meta:
+#         model = MultipleChoice
+#         interfaces = (QuestionType,)
+
+# class TrueFalseType(DjangoObjectType):
+#     class Meta:
+#         model = TrueFalse
+#         interfaces = (QuestionType,)
 
 
 class FormType(DjangoObjectType):
-    class Meta:
-        model = m.Form
+    questions = g.List(QuestionType)
+    
+    def resolve_questions(self, info, **kwargs):
+        return Question.objects.all()
 
+    class Meta:
+        model = Form
 
 class Query(g.ObjectType):
-    my_forms = g.List(FormType)
+    forms = g.List(FormType)
+
+    def resolve_forms(self, info, **kwargs):
+        return Form.objects.all()
+        
 
 
 class CreateForm(g.Mutation):
@@ -23,5 +51,5 @@ class CreateForm(g.Mutation):
     @classmethod
     def mutate(cls, root, info, title):
         owner = info.context.user
-        form = m.Form.objects.create(title=title, created_by=owner)
+        form = Form.objects.create(title=title, created_by=owner)
         return CreateForm(form=form)
