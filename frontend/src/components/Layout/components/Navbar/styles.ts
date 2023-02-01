@@ -63,11 +63,7 @@ export const Link = styled(NavLink) <NavLinkProps>`
 `;
 
 export const AccountDetail = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     font-size: 1.3rem;
-    gap: 10px;
 `;
 
 export const AccountMenu = styled.div`

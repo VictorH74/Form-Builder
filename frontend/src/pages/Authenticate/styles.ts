@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import TextField from '@mui/material/TextField';
 
 export const Container = styled.div`
     display: flex;
@@ -31,24 +32,22 @@ export const Form = styled.form`
     height: 100%;
     padding: 40px;
     gap: 2px;
-
-    & input {
-        padding: 0.5rem;
-        margin-bottom: 1rem;
-        border-radius: 5px;
-        border: 1px solid lightgray;
-        font-size: 1rem;
-    }
 `;
 
 export const Title = styled.h2`
     margin-bottom: 1rem;`
 ;
 
+export const InputField = styled(TextField)`
+    width: 100% !important;
+    margin: 5px 0 !important;
+`;
+
 export const Actions = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
+    margin-top: 8px;
 
     & button[type="submit"] {
         padding: 0.5rem 1rem;

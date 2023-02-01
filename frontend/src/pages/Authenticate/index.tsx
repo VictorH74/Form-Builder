@@ -1,12 +1,13 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { useSpring, animated } from '@react-spring/web';
-import { Actions, Container, Form, Title } from './styles';
-import Input from './components/Input';
+import { Actions, Container, Form, InputField, Title } from './styles';
 import { useMutation } from 'graphql-hooks';
 import { LOGIN_MUTATION } from './graphql_operators';
 import useGraphQlClient from '@/hooks/UseGraphQlClient';
 import { useAuth } from '@/hooks/UseAuth';
 import { Navigate, useNavigate } from 'react-router-dom';
+import Box from '@mui/material/Box';
+
 
 interface FormData {
     name?: string;
@@ -57,7 +58,7 @@ const Authentication: React.FC = () => {
             if (!client || !userCtx) return alert("Erro ao tentar logar!");
 
             let { login, password } = formData
-            
+
             const res = await fetchToken({
                 variables: { login, password }
             })
@@ -73,6 +74,19 @@ const Authentication: React.FC = () => {
 
     if (userCtx?.authenticated) return <Navigate to="/my-forms/" replace />
 
+    /*
+    <Box
+      component={Form}
+      sx={{
+        '& > :not(style)': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+    </Box>
+    */
+
     return (
         <Container>
             <animated.div
@@ -80,22 +94,31 @@ const Authentication: React.FC = () => {
                 style={props}
                 ref={cardRef}
             >
-                <Form onSubmit={handleSubmit}>
+                <Box
+                    component={Form}
+                    noValidate
+                    autoComplete="true"
+                    onSubmit={handleSubmit}
+
+                >
 
                     <Title children={isSignUp ? 'Sign Up' : 'Login'} />
 
                     {
                         isSignUp ? (
                             <>
-                                <Input label="Name" name="name"
+                                <InputField id="outlined-basic" label="Name" variant="outlined"
+                                    name="name"
                                     value={formData.name || ""}
                                     onChange={handleChange}
                                 />
-                                <Input label="Username" name="username"
+                                <InputField id="outlined-basic" label="Username" variant="outlined"
+                                    name="username"
                                     value={formData.username || ""}
                                     onChange={handleChange}
                                 />
-                                <Input label="Email" name="email"
+                                <InputField id="outlined-basic" label="Email" variant="outlined"
+                                    name="email"
                                     type="email"
                                     value={formData.email || ""}
                                     onChange={handleChange}
@@ -103,12 +126,12 @@ const Authentication: React.FC = () => {
                             </>
 
                         ) : (
-                            <Input label="Login" name="login" onChange={handleChange} value={formData.login || ""} />
+                            <InputField id="outlined-basic" label="Login" variant="outlined"
+                                name="login" onChange={handleChange} value={formData.login || ""} />
 
                         )
                     }
-                    <Input
-                        label="Password"
+                    <InputField id="outlined-basic" label="Password" variant="outlined"
                         name="password"
                         type="password"
                         value={formData.password}
@@ -125,7 +148,7 @@ const Authentication: React.FC = () => {
                         </button>
                     </Actions>
 
-                </Form>
+                </Box>
             </animated.div>
         </Container>
     );
