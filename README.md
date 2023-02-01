@@ -1,7 +1,7 @@
 ![Alt text](/frontend/public/project-img.png "Project my-forms route screenshot")
 
 ## About this Project
-This a web application developed in React + vite and Django and its main function is to build form and manager all form created by the user. I intend to allow the user to print their forms or even share via link to other people
+This is a web application developed in React + vite and Django and its main function is to build form and manager all form created by the user. I intend to allow the user to print their forms or even share via link to other people
 
 <br/>
 
