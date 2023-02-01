@@ -3,6 +3,7 @@ import Checkbox from "@/components/CheckBox"
 // import Checkbox from "@src/components/Checkbox"
 import { IQuestion } from "@/pages/FormList/types"
 import { Alternatives, AlternativesContainer, Container, Label } from "../styles"
+import useLanguage from "@/hooks/UseLanguage"
 
 interface IMultipleChoice {
     index: number
@@ -14,7 +15,7 @@ interface IMultipleChoice {
 }
 
 const MultipleChoice: React.FC<IMultipleChoice> = ({ index, question, addAlternative, setCorrectAlternative, setQuestionText, setAlterDetail }) => {
-
+    const { language: lang } = useLanguage()
     const handleChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target
         setQuestionText(index, value)
@@ -38,7 +39,7 @@ const MultipleChoice: React.FC<IMultipleChoice> = ({ index, question, addAlterna
                                 } />
                                 <Checkbox
                                     className="alt-checkbox"
-                                    label="Correct"
+                                    label={lang === "en" ? "Correct" : "Correto"}
                                     checked={a.isCorrect}
                                     onChange={() => setCorrectAlternative(index, i)}
                                 />
@@ -46,9 +47,8 @@ const MultipleChoice: React.FC<IMultipleChoice> = ({ index, question, addAlterna
                         </li>
                     ))}
                 </Alternatives>
-                <button onClick={() => addAlternative(index)}>Add alternative</button>
+                <button onClick={() => addAlternative(index)}>{lang === "en" ? "Add alternative" : "Adicionar alternativa"}</button>
             </AlternativesContainer>
-
         </Container>
 
     )

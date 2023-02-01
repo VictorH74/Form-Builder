@@ -4,9 +4,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { navData } from "./data";
 import { useAuth } from "@/hooks/UseAuth";
+import useLanguage from "@/hooks/UseLanguage";
 
 const NavBar = () => {
     const userCtx = useAuth()
+    const { language } = useLanguage()
 
     return (
         <Container>
@@ -20,7 +22,7 @@ const NavBar = () => {
 
             <Line />
             <Nav>
-                {navData.map(n => (
+                {navData[language as keyof typeof navData].map(n => (
                     <Link className={({ isActive }) => isActive ? 'active' : ""} key={n.label} to={n.path || "/"} >{n.label}</Link>
                 ))}
             </Nav>

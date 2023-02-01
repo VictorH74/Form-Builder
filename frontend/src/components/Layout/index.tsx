@@ -4,12 +4,14 @@ import { Container, Content, ScrollTopBtn } from "./styles";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import NavBar from "./components/Navbar";
 import { useAuth } from "@/hooks/UseAuth";
+import useLanguage from "@/hooks/UseLanguage";
 
 const loginRequiredPath = [
     "my-forms",
 ]
 
 const LoggedLayout = () => {
+    const { language: lang } = useLanguage()
     const [showNav, setShowNav] = useState(false)
     const [showScrollTopBtn, setShowBtn] = useState(false)
     const userCtx = useAuth()
@@ -42,7 +44,7 @@ const LoggedLayout = () => {
                 <Content>
                     <Outlet />
                 </Content>
-                {showScrollTopBtn && <ScrollTopBtn onClick={scrollToTop} children="Subir" />}
+                {showScrollTopBtn && <ScrollTopBtn onClick={scrollToTop} children={lang === "en" ? "Top" : "Subir"} />}
 
             </Container>
         </>
