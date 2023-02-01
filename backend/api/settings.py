@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     # my apps
     'core',
     'form',
-    'testapp',
 ]
 
 MIDDLEWARE = [

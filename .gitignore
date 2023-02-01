@@ -2,5 +2,13 @@
 /diagrams
 .env
 
+__pycache__
+
+
+# ignore all migration files
+migrations/*
+# except for the __init__.py file
+!migrations/__init__.py
+
 # vs code
 .history

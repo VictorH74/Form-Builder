@@ -56,6 +56,7 @@ Cloning the repository
 $ git clone https://github.com/VictorH74/Form-Builder.git
 
 $ cd ./frontend
+$ cp .env.example .env
 $ npm install
 
 $ cd ..
@@ -64,11 +65,16 @@ $ cd ./backend
 $ virtualenv env
 $ ./env/Scripts/activate
 
-$ pip install --no-cache-dir requirements.txt
+$ pip install --no-cache-dir -r requirements.txt
 
+```
+
+### Configuring backend
+```
 $ python manage.py makemigrations
 $ python manage.py migrate
 
+$ python manage.py createsuperuser
 ```
 
 ### Running Back-end
