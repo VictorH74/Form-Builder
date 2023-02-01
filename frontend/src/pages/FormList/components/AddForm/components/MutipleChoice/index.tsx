@@ -16,7 +16,7 @@ interface IMultipleChoice {
 
 const MultipleChoice: React.FC<IMultipleChoice> = ({ index, question, addAlternative, setCorrectAlternative, setQuestionText, setAlterDetail }) => {
     const { language: lang } = useLanguage()
-    const handleChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
         setQuestionText(index, value)
     }
@@ -25,7 +25,7 @@ const MultipleChoice: React.FC<IMultipleChoice> = ({ index, question, addAlterna
         <Container>
             <Label>
                 <p>{question.questionNumber}</p>
-                <textarea placeholder="Question" onChange={handleChangeText} value={question.questionText} />
+                <input placeholder="Question" onChange={handleChangeText} value={question.questionText} />
             </Label>
             <AlternativesContainer>
                 <Alternatives type="A">

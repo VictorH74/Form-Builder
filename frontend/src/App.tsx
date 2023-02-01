@@ -1,20 +1,14 @@
 import { GlobalStyles } from './global/styles/globalStyles';
 import Router from './components/Router';
-import { AuthProvider } from './contexts/AuthContext';
-import GraphQLClientProvider from './contexts/GraphQLContext';
-import { LanguageProvider } from './contexts/LanguageContext';
+import Providers from './components/Providers';
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      <GraphQLClientProvider>
-        <AuthProvider>
-          <LanguageProvider >
-            <Router />
-          </LanguageProvider>
-        </AuthProvider>
-      </GraphQLClientProvider>
+      <Providers>
+        <Router />
+      </Providers>
     </>
   )
 }

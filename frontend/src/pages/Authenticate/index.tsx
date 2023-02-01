@@ -7,7 +7,17 @@ import useGraphQlClient from '@/hooks/UseGraphQlClient';
 import { useAuth } from '@/hooks/UseAuth';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import {
+    Formik,
+    FormikHelpers,
+    FormikProps,
+    Field,
+    FieldProps,
+} from 'formik';
 
+interface MyFormValues {
+    firstName: string;
+}
 
 interface FormData {
     name?: string;
@@ -31,14 +41,13 @@ const Authentication: React.FC = () => {
 
     const cardRef = useRef<HTMLDivElement>(null);
 
-    const navigate = useNavigate();
-
-
     const props = useSpring({
         transform: `perspective(600px) rotateY(${flip ? 360 : 0}deg)`,
         config: { mass: 5, tension: 500, friction: 80 },
         from: { transform: 'perspective(600px) rotateY(0deg)' },
     });
+
+    const initialValues: MyFormValues = { firstName: '' };
 
     const handleFlip = () => {
         setFlip(!flip);
@@ -74,19 +83,6 @@ const Authentication: React.FC = () => {
 
     if (userCtx?.authenticated) return <Navigate to="/my-forms/" replace />
 
-    /*
-    <Box
-      component={Form}
-      sx={{
-        '& > :not(style)': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-    </Box>
-    */
-
     return (
         <Container>
             <animated.div
@@ -94,61 +90,66 @@ const Authentication: React.FC = () => {
                 style={props}
                 ref={cardRef}
             >
-                <Box
-                    component={Form}
-                    noValidate
-                    autoComplete="true"
-                    onSubmit={handleSubmit}
 
-                >
+                        <Box
+                            component={Form}
+                            autoComplete="true"
+                            onSubmit={handleSubmit}
 
-                    <Title children={isSignUp ? 'Sign Up' : 'Login'} />
+                        >
+                            <Title children={isSignUp ? 'Sign Up' : 'Login'} />
 
-                    {
-                        isSignUp ? (
-                            <>
-                                <InputField id="outlined-basic" label="Name" variant="outlined"
-                                    name="name"
-                                    value={formData.name || ""}
-                                    onChange={handleChange}
-                                />
-                                <InputField id="outlined-basic" label="Username" variant="outlined"
-                                    name="username"
-                                    value={formData.username || ""}
-                                    onChange={handleChange}
-                                />
-                                <InputField id="outlined-basic" label="Email" variant="outlined"
-                                    name="email"
-                                    type="email"
-                                    value={formData.email || ""}
-                                    onChange={handleChange}
-                                />
-                            </>
+                            {
+                                isSignUp ? (
+                                    <>
+                                        <InputField id="standard-basic" label="Name" variant="standard"
+                                            name="name"
+                                            value={formData.name || ""}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        <InputField id="standard-basic" label="Username" variant="standard"
+                                            name="username"
+                                            value={formData.username || ""}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        <InputField id="standard-basic" label="Email" variant="standard"
+                                            name="email"
+                                            type="email"
+                                            value={formData.email || ""}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </>
 
-                        ) : (
-                            <InputField id="outlined-basic" label="Login" variant="outlined"
-                                name="login" onChange={handleChange} value={formData.login || ""} />
+                                ) : (
+                                    <InputField id="standard-basic" label="Login" variant="standard"
+                                        name="login" onChange={handleChange}
+                                        required value={formData.login || ""} />
 
-                        )
-                    }
-                    <InputField id="outlined-basic" label="Password" variant="outlined"
-                        name="password"
-                        type="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
+                                )
+                            }
+                            <InputField id="standard-basic" label="Password" variant="standard"
+                                name="password"
+                                type="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+
+                            <Actions>
+                                <button type="submit" >
+                                    {isSignUp ? 'Sign Up' : 'Login'}
+                                </button>
+                                <button type="button" onClick={handleFlip} >
+                                    {isSignUp ? 'Login' : 'Sign Up'}
+                                </button>
+                            </Actions>
+
+                        </Box>
 
 
-                    <Actions>
-                        <button type="submit" >
-                            {isSignUp ? 'Sign Up' : 'Login'}
-                        </button>
-                        <button type="button" onClick={handleFlip} >
-                            {isSignUp ? 'Login' : 'Sign Up'}
-                        </button>
-                    </Actions>
-
-                </Box>
             </animated.div>
         </Container>
     );

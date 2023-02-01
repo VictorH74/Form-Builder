@@ -28,11 +28,12 @@ export const Label = styled.label`
         border-radius: 50%;
     }
 
-    & textarea {
+    & input {
         border: none;
         border-bottom: 2px solid var(--pinkColor);
         outline: none;
         padding: 5px 10px;
+        height: auto;
         font-size: 1.1rem;
         background-color: transparent;
         min-height: 40px;

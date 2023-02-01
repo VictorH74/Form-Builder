@@ -10,7 +10,7 @@ interface IFillBlank {
 
 const FillBlank: React.FC<IFillBlank> = ({ index, question, setQuestionText }) => {
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
         setQuestionText(index, value)
     }
@@ -19,7 +19,7 @@ const FillBlank: React.FC<IFillBlank> = ({ index, question, setQuestionText }) =
         <Container>
             <Label>
                 <p>{question.questionNumber}</p>
-                <textarea onChange={handleChange} placeholder="Question" value={question.questionText} />
+                <input onChange={handleChange} placeholder="Question" value={question.questionText} />
             </Label>
             <span className="answer-spn" >Answer</span>
         </Container>

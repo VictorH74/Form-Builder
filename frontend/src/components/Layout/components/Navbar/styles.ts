@@ -1,5 +1,6 @@
 import { NavLink, NavLinkProps } from "react-router-dom";
 import styled from "styled-components";
+import Button from '@mui/material/Button';
 
 export const Container = styled.div`
     background-color: var(--pinkColor);
@@ -30,6 +31,11 @@ export const Nav = styled.nav`
     display: flex;
     gap: 10px;
     flex-direction: column;
+`;
+
+export const LoginBtn = styled(Button)`
+    width: 100% !important;
+    margin: 10px 0 !important;
 `;
 
 export const Line = styled.div`

@@ -4,25 +4,25 @@ import styled from "styled-components";
 export const Container = styled.div`
     margin: 20px auto;
     padding: 20px;
-    border: 1px solid purple;
     display: flex;
     gap: 10px;
-    /* flex-direction: row; */
-    /* align-content: space-between; */
 `;
 
 export const NewForm = styled.div`
     flex: 1 1 auto;
-    border: 1px solid tomato;
+    border: 1px solid var(--pinkColor);
+    border-radius: 5px;
+    transition: 300ms;
 `;
 
 export const QuestionComponents = styled.div`
-    border: 1px solid tomato;
+    border: 1px solid var(--pinkColor);
+    border-radius: 5px;
     width: 300px;
+    height: fit-content;
 `;
 
 export const QuestionsContainer = styled.div`
-    border: 1px solid purple;
     padding: 10px;
 `;
 

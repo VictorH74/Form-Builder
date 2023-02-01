@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import TextField from '@mui/material/TextField';
+import { Form as FormikForm } from 'formik';
 
 export const Container = styled.div`
     display: flex;
@@ -23,6 +24,7 @@ export const Container = styled.div`
     }
 `;
 
+// styled(FormikForm)
 export const Form = styled.form`
     display: flex;
     flex-direction: column;
@@ -36,11 +38,15 @@ export const Form = styled.form`
 
 export const Title = styled.h2`
     margin-bottom: 1rem;`
-;
+    ;
 
 export const InputField = styled(TextField)`
     width: 100% !important;
     margin: 5px 0 !important;
+
+    & label, & input {
+        color: white !important;
+    }
 `;
 
 export const Actions = styled.div`
