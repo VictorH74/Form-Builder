@@ -8,11 +8,11 @@ class AlternativeType(DjangoObjectType):
     class Meta:
         model = Alternative
 
-#
+
 class QuestionType(DjangoObjectType):
     class Meta:
         model = Question
-        
+
 
 class FormType(DjangoObjectType):
     class Meta:
@@ -24,26 +24,55 @@ class Query(g.ObjectType):
 
     def resolve_forms(self, info, **kwargs):
         return Form.objects.all()
-        
+
+
+class FormInput(g.InputObjectType):
+    title = g.String(required=True)
+    questions = g.List(lambda: QuestionInput, required=True)
+
+
+class QuestionInput(g.InputObjectType):
+    question_text = g.String(required=True)
+    question_number = g.Int(required=True)
+    type = g.String(required=True)
+    alternatives = g.List(lambda: AlternativeInput)
+
+
+class AlternativeInput(g.InputObjectType):
+    detail = g.String(required=True)
+    is_correct = g.Boolean(required=True)
+
 
 class CreateForm(g.Mutation):
     class Arguments:
-        title = g.String(required=True)
-        questions = g.List(QuestionType)
-        
+        form_data = FormInput(required=True)
+
     form = g.Field(FormType)
-    
-    @login_required
-    @classmethod
-    def mutate(cls, root, info, title, questions):
-        owner = info.context.user
-        form = Form.objects.create(title=title, created_by=owner)
+
+    class Arguments:
+        form_data = FormInput(required=True)
+
+    def mutate(self, info, form_data):
+        questions_data = form_data.pop('questions')
+        form = Form.objects.create(**form_data, created_by=info.context.user)
+
+        question_objs = []
+        alternative_objs = []
         
-        question_list = [
-            Question(form=form, question_number=q.question_number, question_text=q.question_text, type=q.type)
-            for q in questions
-            ]
-        
-        Question.objects.bulk_create(question_list)
+        for question_data in questions_data:
+            question_number = question_data.get('question_number')
+            if Question.objects.filter(form=form, question_number=question_number).exists():
+                raise Exception("Question number already exists for this form")
+
+            alternatives_data = question_data.pop('alternatives')
+            question = Question(form=form, **question_data)
+            
+            question_objs.append(question)
+
+            for alternative in alternatives_data:
+                alternative_objs.append(Alternative(question=question, **alternative))
+
+        Question.objects.bulk_create(question_objs)
+        Alternative.objects.bulk_create(alternative_objs)
         
         return CreateForm(form=form)
