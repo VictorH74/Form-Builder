@@ -2,6 +2,8 @@
 /diagrams
 .env
 
+data
+
 __pycache__
 
 # ignore all migration files

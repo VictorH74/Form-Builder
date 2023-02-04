@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    container_name: formbuilder_web
+    ports:
+      - "3000:3000"
+    command: vite
+    volumes:
+      - ./frontend:/app/frontend
+    environment:
+      - NODE_ENV=development
+      - BASE_URL=http://localhost:8000/api
+    working_dir: /app
+
+  api:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    container_name: form_builder_api
+    ports:
+      - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app/backend
+    environment:
+      - DB_NAME=${POSTGRES_DBNAME}
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_HOST=db
+      - DB_PORT=${DB_PORT}
+      - SECRET_KEY=${SECRET_KEY}
+    depends_on:
+      - db
+
+  db:
+    image: postgres:12
+    container_name: formbuilder_db
+    restart: always
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DBNAME}
+      
+  nginx:
+    container_name: formbuilder_nginx
+    restart: always
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8008:80"
+    depends_on:
+      - api
+      - web
