@@ -4,8 +4,8 @@ import { IAddForm, IQuestion } from "../../types"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MultipleChoice from "./components/MutipleChoice";
 import FillBlank from "./components/FillBlank";
-import useLanguage from "@/hooks/UseLanguage";
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from "react-dnd";
+import useTranslate from "@/hooks/UseTranslate";
 
 
 interface DragItem {
@@ -13,13 +13,31 @@ interface DragItem {
 }
 
 const AddForm = () => {
-    const { language: lang } = useLanguage()
+    const translate = useTranslate({
+        en: {
+            title: "Form title",
+            questionText: "Question number [value]",
+            alterDetail: "New alternative",
+            textQuestionComponent: "Text Question",
+            textQuestionAnswer: "Answer",
+            multipleChoiceComponent: "Multiple Choice"
+        },
+        "pt-BR": {
+            title: "Título do formulário",
+            questionText: "Questão número [value]",
+            alterDetail: "Nova alternativa",
+            textQuestionComponent: "Questão de Texto",
+            textQuestionAnswer: "Resposta",
+            multipleChoiceComponent: "Múltipla Escolha"
+        }
+    })
+
     const [formData, setFormData] = useState<IAddForm>({
-        title: "Teste de programação básica",
+        title: translate("title"),
         questions: [
             {
                 questionNumber: 1,
-                questionText: "Question number 1",
+                questionText: translate("questionText", 1),
                 type: "TX",
             },
         ]
@@ -28,7 +46,7 @@ const AddForm = () => {
     const addQuestion = (type: string) => {
         let keys = ["questionNumber", "questionText", "type", "alternatives"]
         let questionNumber = formData.questions.length + 1
-        let question: IQuestion = { questionNumber, questionText: `Question number ${questionNumber}`, type: "" }
+        let question: IQuestion = { questionNumber, questionText: translate("questionText", questionNumber), type: "" }
 
         keys.forEach(key => {
             if (key === "type") question[key] = type
@@ -54,9 +72,6 @@ const AddForm = () => {
         }),
         [addQuestion],
     )
-
-    const opacity = isOver ? 1 : 0.7
-    const backgroundColor = canDrop ? "#d3f1ff58" : "transparent"
 
     const updateFormData = (e: ChangeEvent<HTMLInputElement>) => {
         let { name, value } = e.currentTarget
@@ -89,25 +104,28 @@ const AddForm = () => {
         setFormData(prev => ({ ...prev, questions }))
     }, [formData])
 
-    const addAlternative = useCallback((index: number) => {
-        let newQuestion = formData.questions[index]
-        if (!newQuestion.alternatives) return;
+    const addAlternative = useCallback((QuestionIndex: number) => {
+        let question = formData.questions[QuestionIndex]
+        if (!question.alternatives) return;
 
-        newQuestion.alternatives = [...newQuestion.alternatives, { detail: "New alternative" }]
+        question.alternatives = [...question.alternatives, { detail: translate("alterDetail") }]
 
-        let questions = formData.questions.map((prevQuestion, i) => i === index ? newQuestion : prevQuestion)
+        let questions = formData.questions.map((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
         setFormData(prev => ({ ...prev, questions }))
     }, [formData])
+
+    const opacity = isOver ? 1 : 0.7
+    const backgroundColor = canDrop ? "#d3f1ff58" : "transparent"
 
     return (
         <Container>
             <Backward to="/my-forms" ><ArrowBackIcon sx={{ fontSize: 50 }} /></Backward>
             <QuestionComponents>
-                <Question type="TX" >Text Question</Question>
-                <Question type="MC" >Multiple Choice</Question>
+                <Question type="TX" >{translate("textQuestionComponent")}</Question>
+                <Question type="MC" >{translate("multipleChoiceComponent")}</Question>
             </QuestionComponents>
             <NewForm ref={drop} style={{ backgroundColor, opacity }}>
-                <TitleInput type="text" name="title" placeholder={lang === "en" ? "Title" : "Título"} onChange={updateFormData} value={formData.title} />
+                <TitleInput type="text" name="title" onChange={updateFormData} value={formData.title} />
                 <QuestionsContainer>
                     {
                         formData.questions.map((q, i) =>
@@ -164,7 +182,7 @@ const Question: React.FC<QuestionProps> = memo(function Question({
         }),
         [type],
     )
-    
+
     const containerStyle = useMemo(
         () => ({
             ...questionStyles,

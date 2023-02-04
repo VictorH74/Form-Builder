@@ -45,6 +45,12 @@ const NavBar = () => {
                                     <ListItemIcon>
                                         <LogoutIcon />
                                     </ListItemIcon>
+                                    <ListItemText primary="Settings" />
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 4 }} onClick={userCtx?.logout}>
+                                    <ListItemIcon>
+                                        <LogoutIcon />
+                                    </ListItemIcon>
                                     <ListItemText primary="Logo-ut" />
                                 </ListItemButton>
                             </List>

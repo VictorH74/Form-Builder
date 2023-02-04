@@ -9,13 +9,12 @@ export const LanguageProvider: React.FC<{ children: JSX.Element }> = ({ children
     const [language, setLang] = useState("en")
 
     useEffect(() => {
-        let language = localStorage.getItem("form_builder-language")
-        setLang(language || window.navigator.language)
+        let recoveredLanguage = localStorage.getItem("form_builder-language")
+        let localLanguage = window.navigator.language
+        setLang(recoveredLanguage || ["en", "pt-BR"].includes(localLanguage) ? localLanguage : "en")
     }, [])
 
-    const changeLanguage = (lang: string) => {
-        setLang(lang)
-    }
+    const changeLanguage = (lang: string) => setLang(lang)
 
     const providerValue = {
         language,

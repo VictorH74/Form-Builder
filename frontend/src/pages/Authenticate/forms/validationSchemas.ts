@@ -1,16 +1,7 @@
-import useLanguage from '@/hooks/UseLanguage';
+import useTranslate from '@/hooks/UseTranslate';
 import * as Yup from 'yup';
 
-const { language: lang } = useLanguage()
-
-interface Translation {
-    min: string;
-    max: string;
-    required: string;
-    emailRequired: string;
-  }
-
-const languageStr : { [key: string]: Translation } = {
+const translate = useTranslate({
     "en": {
         min: "Too Short!",
         max: "Too Long!",
@@ -23,11 +14,7 @@ const languageStr : { [key: string]: Translation } = {
         required: "Obrigatório",
         emailRequired: "email inválido",
     }
-}
-
-const translate = (value: keyof Translation) => {
-    return languageStr[lang as keyof typeof languageStr][value]
-}
+})
 
 export const SigninSchema = Yup.object().shape({
     login: Yup.string()
