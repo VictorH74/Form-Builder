@@ -88,3 +88,5 @@ $ python manage.py runserver
 $ cd ./frontend
 $ npm run dev
 ```
+
+<!-- python -c "import secrets; print(secrets.token_urlsafe())" -->

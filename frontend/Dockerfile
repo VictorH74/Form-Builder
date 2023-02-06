@@ -1,4 +1,6 @@
-FROM node:14
+FROM node:18-alpine
+
+RUN mkdir -p /app/frontend
 
 # Create app directory
 WORKDIR /app/frontend
@@ -10,5 +12,7 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+EXPOSE 5173
+
 # Start the app
-CMD [ "vite" ]
+CMD [ "npm", "run", "dev" ]
