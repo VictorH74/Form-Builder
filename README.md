@@ -53,40 +53,37 @@ To run this project you'll need have:
 
 Cloning the repository
 ```
-$ git clone https://github.com/VictorH74/Form-Builder.git
+git clone https://github.com/VictorH74/Form-Builder.git
 
-$ cd ./frontend
-$ cp .env.example .env
-$ npm install
+cd ./frontend
+cp .env.example .env
+npm install
 
-$ cd ..
+cd ..
 
-$ cd ./backend
-$ virtualenv env
-$ ./env/Scripts/activate
+cd ./backend
+virtualenv env
+./env/Scripts/activate
 
-$ pip install --no-cache-dir -r requirements.txt
+pip install --no-cache-dir -r requirements.txt
 
 ```
 
 ### Configuring backend
 ```
-$ python manage.py makemigrations
-$ python manage.py migrate
+python manage.py makemigrations
+python manage.py migrate
 
-$ python manage.py createsuperuser
+python manage.py createsuperuser
 ```
 
 ### Running Back-end
 ```
-$ cd ./backend
-$ ./env/Scripts/activate
-$ python manage.py runserver
+python manage.py runserver
 ```
 ### Running Front-end
 ```
-$ cd ./frontend
-$ npm run dev
+cd ..
+cd ./frontend
+npm run dev
 ```
-
-<!-- python -c "import secrets; print(secrets.token_urlsafe())" -->
