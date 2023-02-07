@@ -44,49 +44,35 @@ This project is part of my personal protfolio. If you have tips on how I can imp
 ## Get Started
 ### Prerequisites
 
-To run this project you'll need have:
-* npm
-* pip
-* virtualenv
+To run this project you'll need have docker
 
 ### Installing
 
 Cloning the repository
 ```
-$ git clone https://github.com/VictorH74/Form-Builder.git
-
-$ cd ./frontend
-$ cp .env.example .env
-$ npm install
-
-$ cd ..
-
-$ cd ./backend
-$ virtualenv env
-$ ./env/Scripts/activate
-
-$ pip install --no-cache-dir -r requirements.txt
-
+git clone https://github.com/VictorH74/Form-Builder.git
 ```
 
-### Configuring backend
+### Env Variables
 ```
-$ python manage.py makemigrations
-$ python manage.py migrate
-
-$ python manage.py createsuperuser
+cd ./form-builder
+cp .env.example .env
 ```
 
-### Running Back-end
+Use bellow command to generate secret key
 ```
-$ cd ./backend
-$ ./env/Scripts/activate
-$ python manage.py runserver
-```
-### Running Front-end
-```
-$ cd ./frontend
-$ npm run dev
+python -c "import secrets; print(secrets.token_urlsafe())"
 ```
 
-<!-- python -c "import secrets; print(secrets.token_urlsafe())" -->
+### Building and running containers
+**Make sure you are in the project folder**
+```
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+### Backend migrations
+```
+docker exec -it formbuilder_api bash -c "python manage.py makemigrations"
+docker exec -it formbuilder_api bash -c "python manage.py migrate"
+```

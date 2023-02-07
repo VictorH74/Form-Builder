@@ -1,13 +1,11 @@
 FROM node:18-alpine
 
-RUN mkdir -p /app/frontend
-
 # Create app directory
-WORKDIR /app/frontend
+WORKDIR /app
 
 # Install app dependencies
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm i
 
 # Bundle app source
 COPY . .

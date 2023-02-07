@@ -12,9 +12,5 @@ COPY . .
 
 EXPOSE 8000
 
-# Apply database migrations
-# RUN python manage.py makemigrations
-# RUN python manage.py migrate
-
 # Start the app
 CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
