@@ -32,9 +32,9 @@ const LoggedLayout = () => {
         return () => document.removeEventListener("scroll", handleScroll)
     }, [])
 
-    // if (loginRequiredPath.includes(location.pathname.split("/")[1]) && !userCtx?.authenticated) {
-    //     return <Navigate to="authentication" replace />
-    // }
+    if (loginRequiredPath.includes(location.pathname.split("/")[1]) && !userCtx?.authenticated) {
+        return <Navigate to="authentication" replace />
+    }
 
     return (
         <>

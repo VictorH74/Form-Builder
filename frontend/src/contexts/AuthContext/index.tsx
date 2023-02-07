@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: JSX.Element }> = ({ children }) 
     const logout = () => {
         client?.setHeader("Authorization", null)
         setUser(undefined)
-        localStorage.clear()
+        localStorage.removeItem("form_builder-token")
     }
 
     const providerValue: IProviderValue = {

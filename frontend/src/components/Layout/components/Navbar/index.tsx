@@ -41,7 +41,7 @@ const NavBar = () => {
                         </ListItemButton>
                         <Collapse in={open} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
-                                <ListItemButton sx={{ pl: 4 }} onClick={userCtx?.logout}>
+                                <ListItemButton sx={{ pl: 4 }} onClick={() => alert("Under development...")}>
                                     <ListItemIcon>
                                         <LogoutIcon />
                                     </ListItemIcon>
