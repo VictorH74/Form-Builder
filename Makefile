@@ -17,7 +17,7 @@ rebuild_webapp:
 	docker-compose up -d --no-deps --build web
 
 rebuild_backend:
-	docker-compose up -d --no-deps --build backend
+	docker-compose up -d --no-deps --build api
 
 migrations:
 	docker exec -it formbuilder_api bash -c "python manage.py makemigrations"
