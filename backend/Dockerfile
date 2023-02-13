@@ -1,16 +1,16 @@
-FROM python:3.8
+FROM python:3.9.2
+ENV PYTHONUNBUFFERED=1
 
-# Create app directory
-WORKDIR /app/backend
+WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY requirements.txt .
+RUN apt update
+
+RUN apt install gettext -y
+
+COPY requirements.txt ./
+
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Bundle app source
 COPY . .
 
-EXPOSE 8000
-
-# Start the app
-CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
+CMD ["tail", "-f", "/dev/null"]

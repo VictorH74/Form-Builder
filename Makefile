@@ -9,7 +9,7 @@ down:
 	docker-compose down
 
 build:
-	make remove_migrations_files
+	make remove_migration_files
 	docker-compose build --no-cache
 	make run
 
@@ -40,3 +40,6 @@ backend_bash:
 
 frontend_bash:
 	docker exec -it formbuilder_web bash
+
+envs:
+	cp .env.example .env

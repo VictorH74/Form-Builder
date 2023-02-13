@@ -10,7 +10,7 @@ DEBUG = True
 
 AUTH_USER_MODEL = 'core.User'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] 
 
 # Application definition
 

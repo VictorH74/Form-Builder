@@ -8,16 +8,15 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
-      watch: {
-        usePolling: true,
-      },
-      host: true, // needed for the Docker Container port mapping to work
-      strictPort: true,
+      host: '0.0.0.0',
       port: 5173,
     },
     resolve: {
       alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
     },
+    build: {
+      cache: false
+    }
   }
 })
 

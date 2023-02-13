@@ -1,16 +1,16 @@
-FROM node:18-alpine
+# Declare the base image
+FROM node:16.18.0-alpine
 
-# Create app directory
-WORKDIR /app
+RUN mkdir -p /home/node/app
 
-# Install app dependencies
-COPY package.json package-lock.json ./
-RUN npm i
+WORKDIR /home/node/app
 
-# Bundle app source
-COPY . .
+COPY package.json .
 
-EXPOSE 5173
+RUN yarn
 
-# Start the app
-CMD [ "npm", "run", "dev" ]
+COPY . . 
+
+EXPOSE 3000
+
+CMD ["yarn", "dev"]

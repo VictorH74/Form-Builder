@@ -17,36 +17,26 @@ services:
       - my_network
 
   web:
-    build:
-      context: frontend
-      dockerfile: Dockerfile
     container_name: formbuilder_web
     restart: always
+    build: 
+      context: frontend
+      dockerfile: Dockerfile
     ports:
       - "${WEB_PORT}:5173"
     volumes:
-      - ./frontend:/app/reactapp
-    environment:
-      - NODE_ENV=development
-      - API_PORT=${API_PORT}
-    networks:
-      my_network:
-        aliases:
-          - frontend
+      - /home/node/app/node_modules
+      - ./frontend:/home/node/app
+    links:
+      - api
     stdin_open: true
 
   api:
+    container_name: formbuilder_api
+    restart: always
     build:
       context: backend
       dockerfile: Dockerfile
-    container_name: formbuilder_api
-    restart: always
-    ports:
-      - "${API_PORT}:8000"
-    volumes:
-      - ./backend:/app/backend
-    depends_on:
-      - db
     environment:
       - DB_NAME=${POSTGRES_DBNAME}
       - DB_USER=${POSTGRES_USER}
@@ -54,6 +44,13 @@ services:
       - DB_HOST=db
       - DB_PORT=${DB_PORT}
       - SECRET_KEY=${SECRET_KEY}
+    ports:
+      - "${API_PORT}:8000"
+    volumes:
+      - ./backend:/usr/src/app
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
     networks:
       my_network:
         aliases:

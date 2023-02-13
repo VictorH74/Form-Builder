@@ -51,12 +51,12 @@ To run this project you'll need have docker
 Cloning the repository
 ```
 git clone https://github.com/VictorH74/Form-Builder.git
+cd ./form-builder
 ```
 
 ### Env Variables
 ```
-cd ./form-builder
-cp .env.example .env
+make envs
 ```
 
 Use bellow command to generate secret key
@@ -67,12 +67,10 @@ python -c "import secrets; print(secrets.token_urlsafe())"
 ### Building and running containers
 **Make sure you are in the project folder**
 ```
-docker-compose build --no-cache
-docker-compose up -d
+make build
 ```
 
 ### Backend migrations
 ```
-docker exec -it formbuilder_api bash -c "python manage.py makemigrations"
-docker exec -it formbuilder_api bash -c "python manage.py migrate"
+make migrations
 ```
