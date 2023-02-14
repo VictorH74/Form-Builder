@@ -1,11 +1,13 @@
 import React, { useState, useCallback, ChangeEvent, memo, useMemo, CSSProperties } from "react"
-import { Backward, Container, NewForm, QuestionComponents, QuestionsContainer, TitleInput } from "./styles"
+import { Backward, Container, NewForm, QuestionComponents, QuestionsContainer, SubmitBtn, TitleInput } from "./styles"
 import { IAddForm, IQuestion } from "../../types"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MultipleChoice from "./components/MutipleChoice";
 import FillBlank from "./components/FillBlank";
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 import useTranslate from "@/hooks/UseTranslate";
+import { useMutation } from 'graphql-hooks';
+import { CREATE_FORM_MUTATION } from "../../graphql_operators";
 
 
 interface DragItem {
@@ -13,6 +15,7 @@ interface DragItem {
 }
 
 const AddForm = () => {
+    const [createForm, { loading }] = useMutation(CREATE_FORM_MUTATION)
     const translate = useTranslate({
         en: {
             title: "Form title",
@@ -50,7 +53,10 @@ const AddForm = () => {
 
         keys.forEach(key => {
             if (key === "type") question[key] = type
-            if (key === "alternatives" && type === "MC") question[key] = []
+            if (key === "alternatives" && type === "MC") question[key] = [
+                { detail: "Alternative 1", isCorrect: true },
+                { detail: "Alternative 2" },
+            ]
         })
         let prevQuestions = formData.questions
         setFormData(prev => ({ ...prev, questions: [...prevQuestions, question] }))
@@ -114,6 +120,18 @@ const AddForm = () => {
         setFormData(prev => ({ ...prev, questions }))
     }, [formData])
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(formData)
+        const res = await createForm({
+            variables: formData
+        })
+
+        if (res.error) {
+            return alert(res.error.graphQLErrors[0].message)
+        }
+    }
+
     const opacity = isOver ? 1 : 0.7
     const backgroundColor = canDrop ? "#d3f1ff58" : "transparent"
 
@@ -124,7 +142,7 @@ const AddForm = () => {
                 <Question type="TX" >{translate("textQuestionComponent")}</Question>
                 <Question type="MC" >{translate("multipleChoiceComponent")}</Question>
             </QuestionComponents>
-            <NewForm ref={drop} style={{ backgroundColor, opacity }}>
+            <NewForm onSubmit={handleSubmit} ref={drop} style={{ backgroundColor, opacity }}>
                 <TitleInput type="text" name="title" onChange={updateFormData} value={formData.title} />
                 <QuestionsContainer>
                     {
@@ -149,6 +167,7 @@ const AddForm = () => {
                                     : "")
                     }
                 </QuestionsContainer>
+                <SubmitBtn children="Submit" />
             </NewForm>
         </Container>
     )

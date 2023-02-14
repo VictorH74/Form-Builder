@@ -14,12 +14,40 @@ import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
 import LoginIcon from '@mui/icons-material/Login';
 import Button from '@mui/material/Button';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
     const userCtx = useAuth()
-    const { language } = useLanguage()
+    const { language: lang } = useLanguage()
     const navigate = useNavigate();
+
+    const accountMenuData = {
+        "en": [
+            {
+                label: "Settings",
+                func: () => alert("Under development..."),
+                Icon: SettingsIcon
+            },
+            {
+                label: "Log-out",
+                func: userCtx?.logout,
+                Icon: LogoutIcon
+            },
+        ],
+        "pt-BR": [
+            {
+                label: "Configurações",
+                func: () => alert("Under development..."),
+                Icon: SettingsIcon
+            },
+            {
+                label: "Sair",
+                func: userCtx?.logout,
+                Icon: LogoutIcon
+            },
+        ],
+    }
 
     const [open, setOpen] = React.useState(false);
 
@@ -41,18 +69,16 @@ const NavBar = () => {
                         </ListItemButton>
                         <Collapse in={open} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
-                                <ListItemButton sx={{ pl: 4 }} onClick={() => alert("Under development...")}>
-                                    <ListItemIcon>
-                                        <LogoutIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Settings" />
-                                </ListItemButton>
-                                <ListItemButton sx={{ pl: 4 }} onClick={userCtx?.logout}>
-                                    <ListItemIcon>
-                                        <LogoutIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Logo-ut" />
-                                </ListItemButton>
+                                {
+                                    accountMenuData[lang as keyof typeof accountMenuData].map(({ func, label, Icon }) => (
+                                        <ListItemButton sx={{ pl: 4 }} onClick={func}>
+                                            <ListItemIcon>
+                                                <Icon />
+                                            </ListItemIcon>
+                                            <ListItemText primary={label} />
+                                        </ListItemButton>
+                                    ))
+                                }
                             </List>
                         </Collapse>
 
@@ -65,7 +91,7 @@ const NavBar = () => {
             }
             <Line />
             <Nav>
-                {navData[language as keyof typeof navData].map(n => (
+                {navData[lang as keyof typeof navData].map(n => (
                     <Link className={({ isActive }) => isActive ? 'active' : ""} key={n.label} to={n.path || "/"} >{n.label}</Link>
                 ))}
             </Nav>

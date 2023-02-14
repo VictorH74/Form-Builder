@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { Actions, Container, Form, InputField, Title } from './styles';
 import { useMutation } from 'graphql-hooks';
@@ -32,7 +32,7 @@ const Authentication: React.FC = () => {
         login: '',
         password: '',
     });
-    const [fetchToken, { loading, error, data }] = useMutation(LOGIN_MUTATION)
+    const [fetchToken, { loading }] = useMutation(LOGIN_MUTATION)
     const client = useGraphQlClient()
     const userCtx = useAuth();
 
@@ -71,6 +71,11 @@ const Authentication: React.FC = () => {
             const res = await fetchToken({
                 variables: { login, password }
             })
+
+            if (res.error) {
+                return alert(res.error.graphQLErrors[0].message)
+            }
+
             let { token } = res.data.tokenAuth
 
             localStorage.setItem("form_builder-token", token);
@@ -78,6 +83,7 @@ const Authentication: React.FC = () => {
 
             let user = await userCtx.fetchUser()
             userCtx.setUser(user.data.me)
+
         }
     };
 
@@ -91,63 +97,63 @@ const Authentication: React.FC = () => {
                 ref={cardRef}
             >
 
-                        <Box
-                            component={Form}
-                            autoComplete="true"
-                            onSubmit={handleSubmit}
+                <Box
+                    component={Form}
+                    autoComplete="true"
+                    onSubmit={handleSubmit}
 
-                        >
-                            <Title children={isSignUp ? 'Sign Up' : 'Login'} />
+                >
+                    <Title children={isSignUp ? 'Sign Up' : 'Login'} />
 
-                            {
-                                isSignUp ? (
-                                    <>
-                                        <InputField id="name" label="Name" variant="standard"
-                                            name="name"
-                                            value={formData.name || ""}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                        <InputField id="username" label="Username" variant="standard"
-                                            name="username"
-                                            value={formData.username || ""}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                        <InputField id="email" label="Email" variant="standard"
-                                            name="email"
-                                            type="email"
-                                            value={formData.email || ""}
-                                            onChange={handleChange}
-                                            required
-                                        />
-                                    </>
+                    {
+                        isSignUp ? (
+                            <>
+                                <InputField id="name" label="Name" variant="standard"
+                                    name="name"
+                                    value={formData.name || ""}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <InputField id="username" label="Username" variant="standard"
+                                    name="username"
+                                    value={formData.username || ""}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                <InputField id="email" label="Email" variant="standard"
+                                    name="email"
+                                    type="email"
+                                    value={formData.email || ""}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </>
 
-                                ) : (
-                                    <InputField id="login" label="Login" variant="standard"
-                                        name="login" onChange={handleChange}
-                                        required value={formData.login || ""} />
+                        ) : (
+                            <InputField id="login" label="Login" variant="standard"
+                                name="login" onChange={handleChange}
+                                required value={formData.login || ""} />
 
-                                )
-                            }
-                            <InputField id="password" label="Password" variant="standard"
-                                name="password"
-                                type="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                            />
+                        )
+                    }
+                    <InputField id="password" label="Password" variant="standard"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
 
-                            <Actions>
-                                <button type="submit" >
-                                    {isSignUp ? 'Sign Up' : 'Login'}
-                                </button>
-                                <button type="button" onClick={handleFlip} >
-                                    {isSignUp ? 'Login' : 'Sign Up'}
-                                </button>
-                            </Actions>
+                    <Actions>
+                        <button type="submit" disabled={loading} >
+                            {isSignUp ? 'Sign Up' : 'Login'}
+                        </button>
+                        <button type="button" onClick={handleFlip} disabled={loading} >
+                            {isSignUp ? 'Login' : 'Sign Up'}
+                        </button>
+                    </Actions>
 
-                        </Box>
+                </Box>
 
 
             </animated.div>

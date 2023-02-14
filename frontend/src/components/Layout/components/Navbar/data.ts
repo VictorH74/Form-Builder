@@ -37,8 +37,7 @@ export const navData = {
 
 
 
-export const accountMenuData = [
-]
+
 
 // PROFILE
 // LOG-OUT

@@ -54,7 +54,7 @@ export const Actions = styled.div`
     justify-content: space-between;
     width: 100%;
     margin-top: 8px;
-
+    
     & button[type="submit"] {
         padding: 0.5rem 1rem;
         background-color: dodgerblue;
@@ -67,9 +67,10 @@ export const Actions = styled.div`
 
     & button[type="button"] {
         padding: 0.5rem 1rem;
-        background-color: lightgray;
-        color: white;
-        border: none;
+        background-color: transparent;
+        border: 2px solid dodgerblue;
+        font-weight: bolder;
+        color: dodgerblue;
         border-radius: 5px;
         font-size: 1rem;
         cursor: pointer;

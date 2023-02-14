@@ -1,16 +1,24 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { AddLink, Container } from './styles'
-import { formListData } from "./mockData"
 import FormItem from './components/FormItem'
+import { FORMS_QUERY } from './graphql_operators';
+import { useQuery } from 'graphql-hooks';
 
 
 function FormList() {
+    const { loading, error, data } = useQuery(FORMS_QUERY)
+
+    if (loading) {
+        return <div>Loading...</div>
+    }
+
+    if (error) return <div>Error</div>
+
     return (
         <Container>
             <AddLink to="add" ><AddCircleOutlineIcon sx={{ fontSize: 50 }} /></AddLink>
-            {formListData.map(item => (<FormItem key={item.id} {...item} />))}
+            {data.forms.map(form => (<FormItem key={form.id} {...form} />))}
         </Container>
-
     )
 }
 

@@ -53,7 +53,7 @@ const MultipleChoice: React.FC<IMultipleChoice> = ({ index, question, addAlterna
                         </li>
                     ))}
                 </Alternatives>
-                <button onClick={() => addAlternative(index)}>{lang === "en" ? "Add alternative" : "Adicionar alternativa"}</button>
+                <button type="button" onClick={() => addAlternative(index)}>{lang === "en" ? "Add alternative" : "Adicionar alternativa"}</button>
             </AlternativesContainer>
         </Container>
 

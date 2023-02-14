@@ -31,11 +31,8 @@ export const AuthProvider: React.FC<{ children: JSX.Element }> = ({ children }) 
 
             if (!recoveredToken || !client) return;
 
-            console.log(recoveredToken)
-
             client.setHeader("Authorization", `JWT ${recoveredToken}`)
             let res = await fetchUser()
-            console.log(res.data.me)
             setUser(res.data.me)
         }
 

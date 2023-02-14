@@ -22,8 +22,9 @@ class FormType(DjangoObjectType):
 class Query(g.ObjectType):
     forms = g.List(FormType)
 
+    @login_required
     def resolve_forms(self, info, **kwargs):
-        return Form.objects.all()
+        return Form.objects.all().filter(created_by=info.context.user)
 
 
 class FormInput(g.InputObjectType):
@@ -40,7 +41,7 @@ class QuestionInput(g.InputObjectType):
 
 class AlternativeInput(g.InputObjectType):
     detail = g.String(required=True)
-    is_correct = g.Boolean(required=True)
+    is_correct = g.Boolean()
 
 
 class CreateForm(g.Mutation):
@@ -52,6 +53,7 @@ class CreateForm(g.Mutation):
     class Arguments:
         form_data = FormInput(required=True)
 
+    @login_required
     def mutate(self, info, form_data):
         questions_data = form_data.pop('questions')
         form = Form.objects.create(**form_data, created_by=info.context.user)
@@ -64,13 +66,17 @@ class CreateForm(g.Mutation):
             if Question.objects.filter(form=form, question_number=question_number).exists():
                 raise Exception("Question number already exists for this form")
 
-            alternatives_data = question_data.pop('alternatives')
+            alternatives_data = None
+            if 'alternatives' in question_data:
+                alternatives_data = question_data.pop('alternatives')
+                
             question = Question(form=form, **question_data)
             
             question_objs.append(question)
 
-            for alternative in alternatives_data:
-                alternative_objs.append(Alternative(question=question, **alternative))
+            if alternatives_data:
+                for alternative in alternatives_data:
+                    alternative_objs.append(Alternative(question=question, **alternative))
 
         Question.objects.bulk_create(question_objs)
         Alternative.objects.bulk_create(alternative_objs)

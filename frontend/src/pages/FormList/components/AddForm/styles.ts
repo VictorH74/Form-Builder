@@ -8,11 +8,18 @@ export const Container = styled.div`
     gap: 10px;
 `;
 
-export const NewForm = styled.div`
+export const NewForm = styled.form`
     flex: 1 1 auto;
     border: 1px solid var(--pinkColor);
     border-radius: 5px;
     transition: 300ms;
+    & button {
+        background-color: var(--pinkColor);
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 `;
 
 export const QuestionComponents = styled.div`
@@ -41,4 +48,15 @@ export const Backward = styled(Link)`
     top: 20px;
     left: 20px;
     cursor: pointer;
+`;
+
+export const SubmitBtn = styled.button.attrs({
+    type: "submit",
+})`
+    background-color: dodgerblue !important;
+    font-size: 18px;
+    margin: 10px;
+    margin-left: 50%;
+    translate: -50% 0;
+    width: 50%;
 `;

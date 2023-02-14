@@ -20,20 +20,6 @@ export const Title = styled.h2`
     font-size: 1.2rem;
 `;
 
-interface IButton {
-    t: "delete" | "view"
-}
-
-export const Button = styled.button<IButton>`
-    height: 50px;
-    width: 100px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    background-color: ${({t}) => t === "view" ? "#0D11A5" : "#AC2B2E"};
-    margin: 0 5px;
-`;
-
 export const ButtonContainer = styled.div`
     display: flex;
     gap: 20px;
