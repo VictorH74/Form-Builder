@@ -27,9 +27,15 @@ services:
     volumes:
       - /home/node/app/node_modules
       - ./frontend:/home/node/app
+    environment:
+      - VITE_API_URL=http://localhost:${API_PORT}/api
     links:
       - api
     stdin_open: true
+    networks:
+      my_network:
+        aliases:
+          - frontend
 
   api:
     container_name: formbuilder_api

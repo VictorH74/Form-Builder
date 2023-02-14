@@ -102,19 +102,19 @@ const Authentication: React.FC = () => {
                             {
                                 isSignUp ? (
                                     <>
-                                        <InputField id="standard-basic" label="Name" variant="standard"
+                                        <InputField id="name" label="Name" variant="standard"
                                             name="name"
                                             value={formData.name || ""}
                                             onChange={handleChange}
                                             required
                                         />
-                                        <InputField id="standard-basic" label="Username" variant="standard"
+                                        <InputField id="username" label="Username" variant="standard"
                                             name="username"
                                             value={formData.username || ""}
                                             onChange={handleChange}
                                             required
                                         />
-                                        <InputField id="standard-basic" label="Email" variant="standard"
+                                        <InputField id="email" label="Email" variant="standard"
                                             name="email"
                                             type="email"
                                             value={formData.email || ""}
@@ -124,13 +124,13 @@ const Authentication: React.FC = () => {
                                     </>
 
                                 ) : (
-                                    <InputField id="standard-basic" label="Login" variant="standard"
+                                    <InputField id="login" label="Login" variant="standard"
                                         name="login" onChange={handleChange}
                                         required value={formData.login || ""} />
 
                                 )
                             }
-                            <InputField id="standard-basic" label="Password" variant="standard"
+                            <InputField id="password" label="Password" variant="standard"
                                 name="password"
                                 type="password"
                                 value={formData.password}

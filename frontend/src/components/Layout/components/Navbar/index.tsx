@@ -21,7 +21,7 @@ const NavBar = () => {
     const { language } = useLanguage()
     const navigate = useNavigate();
 
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
 
     const handleClick = () => {
         setOpen(!open);

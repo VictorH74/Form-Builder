@@ -74,3 +74,8 @@ make build
 ```
 make migrations
 ```
+
+### Create superuser
+```
+make superuser
+```

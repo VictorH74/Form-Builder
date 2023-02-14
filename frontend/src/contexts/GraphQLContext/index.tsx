@@ -2,10 +2,10 @@
 import React from 'react'
 import { GraphQLClient, ClientContext } from 'graphql-hooks'
 
-const API_PORT = '8001'
+const API_URL = import.meta.env.VITE_API_URL
 
 const client = new GraphQLClient({
-    url: `http://api:${API_PORT}/graphql`,
+    url: `${API_URL}/graphql`,
 })
 
 interface IGraphQLClientProps {

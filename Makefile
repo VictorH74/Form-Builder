@@ -13,7 +13,7 @@ build:
 	docker-compose build --no-cache
 	make run
 
-rebuild_webapp:
+rebuild_web:
 	docker-compose up -d --no-deps --build web
 
 rebuild_backend:
@@ -43,3 +43,6 @@ frontend_bash:
 
 envs:
 	cp .env.example .env
+
+backend_ip_address:
+	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' formbuilder_api
