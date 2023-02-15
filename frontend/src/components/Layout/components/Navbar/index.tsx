@@ -71,7 +71,7 @@ const NavBar = () => {
                             <List component="div" disablePadding>
                                 {
                                     accountMenuData[lang as keyof typeof accountMenuData].map(({ func, label, Icon }) => (
-                                        <ListItemButton sx={{ pl: 4 }} onClick={func}>
+                                        <ListItemButton key={label} sx={{ pl: 4 }} onClick={func}>
                                             <ListItemIcon>
                                                 <Icon />
                                             </ListItemIcon>
@@ -91,8 +91,8 @@ const NavBar = () => {
             }
             <Line />
             <Nav>
-                {navData[lang as keyof typeof navData].map(n => (
-                    <Link className={({ isActive }) => isActive ? 'active' : ""} key={n.label} to={n.path || "/"} >{n.label}</Link>
+                {navData[lang as keyof typeof navData].map(({label, path}) => (
+                    <Link className={({ isActive }) => isActive ? 'active' : ""} key={label} to={path || "/"} >{label}</Link>
                 ))}
             </Nav>
         </Container>

@@ -50,9 +50,6 @@ class CreateForm(g.Mutation):
 
     form = g.Field(FormType)
 
-    class Arguments:
-        form_data = FormInput(required=True)
-
     @login_required
     def mutate(self, info, form_data):
         questions_data = form_data.pop('questions')

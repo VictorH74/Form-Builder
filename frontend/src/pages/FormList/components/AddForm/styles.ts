@@ -10,8 +10,11 @@ export const Container = styled.div`
 
 export const NewForm = styled.form`
     flex: 1 1 auto;
-    border: 1px solid var(--pinkColor);
-    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    min-width: 400px;
+    border-radius: 10px;
+    box-shadow: -5px -5px 20px rgba(255,255,255,0.2), 5px 5px 25px rgba(0,0,0,0.8);
     transition: 300ms;
     & button {
         background-color: var(--pinkColor);
@@ -23,7 +26,7 @@ export const NewForm = styled.form`
 `;
 
 export const QuestionComponents = styled.div`
-    border: 1px solid var(--pinkColor);
+    border: 1px dashed var(--pinkColor);
     border-radius: 5px;
     width: 300px;
     height: fit-content;
@@ -45,7 +48,7 @@ export const TitleInput = styled.input`
 
 export const Backward = styled(Link)`
     position: absolute;
-    top: 20px;
+    top: -5px;
     left: 20px;
     cursor: pointer;
 `;

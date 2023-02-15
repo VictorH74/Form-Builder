@@ -16,7 +16,7 @@ function FormList() {
 
     return (
         <Container>
-            <AddLink to="add" ><AddCircleOutlineIcon sx={{ fontSize: 50 }} /></AddLink>
+            <AddLink to="add" ><AddCircleOutlineIcon sx={{ fontSize: 50, color: "dodgerblue" }} /></AddLink>
             {data.forms.map(form => (<FormItem key={form.id} {...form} />))}
         </Container>
     )

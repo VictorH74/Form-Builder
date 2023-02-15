@@ -15,5 +15,7 @@ class Mutation(g.ObjectType):
     refresh_token = graphql_jwt.Refresh.Field()
     
     create_form = f.CreateForm.Field()
+    create_user = u.CreateUser.Field()
+    
 
 schema = g.Schema(query=Query, mutation=Mutation)

@@ -20,8 +20,8 @@ const FormItem: React.FC<IFormList> = ({ id, title }) => {
                 {title}
             </Title>
             <ButtonContainer>
-                <VisibilityIcon color="primary" sx={{ fontSize: 30,  }} onClick={viewForm} />
-                <DeleteOutlineIcon sx={{ color: "#AC2B2E", fontSize: 30,  }} onClick={deleteForm} />
+                <VisibilityIcon sx={{ color: "dodgerblue", fontSize: 30, cursor: "pointer"  }} onClick={viewForm} />
+                <DeleteOutlineIcon sx={{ color: "#AC2B2E", fontSize: 30, cursor: "pointer"  }} onClick={deleteForm} />
             </ButtonContainer>
         </Container>
     )

@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { Actions, Container, Form, InputField, Title } from './styles';
 import { useMutation } from 'graphql-hooks';
-import { LOGIN_MUTATION } from './graphql_operators';
+import { LOGIN_MUTATION, SIGNUP_MUTATION } from './graphql_operators';
 import useGraphQlClient from '@/hooks/UseGraphQlClient';
 import { useAuth } from '@/hooks/UseAuth';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -32,7 +32,8 @@ const Authentication: React.FC = () => {
         login: '',
         password: '',
     });
-    const [fetchToken, { loading }] = useMutation(LOGIN_MUTATION)
+    const [fetchToken, { loading: fetchTokenLoading }] = useMutation(LOGIN_MUTATION)
+    const [registerUser, { loading: signUpLoading }] = useMutation(SIGNUP_MUTATION)
     const client = useGraphQlClient()
     const userCtx = useAuth();
 
@@ -61,30 +62,41 @@ const Authentication: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (!client || !userCtx) return alert("Erro ao tentar logar!");
 
-        if (isSignUp) return console.log(formData)
-        else {
-            if (!client || !userCtx) return alert("Erro ao tentar logar!");
+        if (isSignUp) {
+            let { name, username, email, phone, password } = formData;
 
-            let { login, password } = formData
-
-            const res = await fetchToken({
-                variables: { login, password }
+            const res = await registerUser({
+                variables: { name, username, email, phone, password }
             })
 
             if (res.error) {
                 return alert(res.error.graphQLErrors[0].message)
             }
 
-            let { token } = res.data.tokenAuth
+            alert("User created!")
 
-            localStorage.setItem("form_builder-token", token);
-            client.setHeader('Authorization', `JWT ${token}`)
-
-            let user = await userCtx.fetchUser()
-            userCtx.setUser(user.data.me)
-
+            return;
         }
+
+        let { login, password } = formData
+
+        const res = await fetchToken({
+            variables: { login, password }
+        })
+
+        if (res.error) {
+            return alert(res.error.graphQLErrors[0].message)
+        }
+
+        let { token } = res.data.tokenAuth
+
+        localStorage.setItem("form_builder-token", token);
+        client.setHeader('Authorization', `JWT ${token}`)
+
+        let user = await userCtx.fetchUser()
+        userCtx.setUser(user.data.me)
     };
 
     if (userCtx?.authenticated) return <Navigate to="/my-forms/" replace />
@@ -145,10 +157,10 @@ const Authentication: React.FC = () => {
                     />
 
                     <Actions>
-                        <button type="submit" disabled={loading} >
+                        <button type="submit" disabled={fetchTokenLoading || signUpLoading} >
                             {isSignUp ? 'Sign Up' : 'Login'}
                         </button>
-                        <button type="button" onClick={handleFlip} disabled={loading} >
+                        <button type="button" onClick={handleFlip} disabled={fetchTokenLoading || signUpLoading} >
                             {isSignUp ? 'Login' : 'Sign Up'}
                         </button>
                     </Actions>

@@ -133,11 +133,13 @@ const AddForm = () => {
     }
 
     const opacity = isOver ? 1 : 0.7
-    const backgroundColor = canDrop ? "#d3f1ff58" : "transparent"
+    const backgroundColor = canDrop ? "#6969694b" : "transparent"
 
     return (
         <Container>
-            <Backward to="/my-forms" ><ArrowBackIcon sx={{ fontSize: 50 }} /></Backward>
+            <Backward to="/my-forms" >
+                <ArrowBackIcon sx={{ fontSize: 50, color: "dodgerblue" }} />
+            </Backward>
             <QuestionComponents>
                 <Question type="TX" >{translate("textQuestionComponent")}</Question>
                 <Question type="MC" >{translate("multipleChoiceComponent")}</Question>
@@ -167,7 +169,7 @@ const AddForm = () => {
                                     : "")
                     }
                 </QuestionsContainer>
-                <SubmitBtn children="Submit" />
+                <SubmitBtn children="Submit" disabled={loading} />
             </NewForm>
         </Container>
     )
@@ -183,9 +185,12 @@ interface QuestionProps {
 }
 
 const questionStyles: CSSProperties = {
-    border: '1px solid purple',
     padding: '0.5rem',
     margin: '0.5rem',
+    backgroundColor: "dodgerblue",
+    borderRadius: 20,
+    textAlign: "center",
+    cursor: "move"
 }
 
 const Question: React.FC<QuestionProps> = memo(function Question({
@@ -212,7 +217,7 @@ const Question: React.FC<QuestionProps> = memo(function Question({
 
     return (
         <div ref={drag} style={containerStyle} role="Question" >
-            {children}
+            <p>{children}</p>
         </div>
     )
 })
