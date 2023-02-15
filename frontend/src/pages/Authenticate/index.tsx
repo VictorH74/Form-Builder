@@ -1,6 +1,6 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useSpring, animated } from '@react-spring/web';
-import { Actions, Container, Form, InputField, Title } from './styles';
+import { Actions, Container, CreatedAccount, Form, InputField, Title } from './styles';
 import { useMutation } from 'graphql-hooks';
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from './graphql_operators';
 import useGraphQlClient from '@/hooks/UseGraphQlClient';
@@ -14,6 +14,7 @@ import {
     Field,
     FieldProps,
 } from 'formik';
+import useTranslate from '@/hooks/UseTranslate';
 
 interface MyFormValues {
     firstName: string;
@@ -28,6 +29,24 @@ interface FormData {
 }
 
 const Authentication: React.FC = () => {
+    const translate = useTranslate({
+        en: {
+            formTitleLogin: "Login",
+            formTitleSignup: "SignUp",
+            formTitleCreated: "Account created!",
+            usernameLabel: "Username",
+            nameLabel: "Name",
+            passwordLabel: "Password",
+        },
+        "pt-BR": {
+            formTitleLogin: "Login",
+            formTitleSignup: "Cadastrar",
+            formTitleCreated: "Conta criada!",
+            usernameLabel: "Nome de Usuário",
+            nameLabel: "Nome",
+            passwordLabel: "Senha",
+        }
+    })
     const [formData, setFormData] = useState<FormData>({
         login: '',
         password: '',
@@ -39,6 +58,7 @@ const Authentication: React.FC = () => {
 
     const [isSignUp, setIsSignUp] = useState(false);
     const [flip, setFlip] = useState(false);
+    const [createdAccount, setCreatedAccount] = useState(false)
 
     const cardRef = useRef<HTMLDivElement>(null);
 
@@ -75,7 +95,7 @@ const Authentication: React.FC = () => {
                 return alert(res.error.graphQLErrors[0].message)
             }
 
-            alert("User created!")
+            setCreatedAccount(true);
 
             return;
         }
@@ -115,61 +135,84 @@ const Authentication: React.FC = () => {
                     onSubmit={handleSubmit}
 
                 >
-                    <Title children={isSignUp ? 'Sign Up' : 'Login'} />
+                    <Title children={
+                        isSignUp ?
+                            createdAccount ? translate("formTitleCreated") :
+                                translate("formTitleSignup")
+                            :
+                            translate("formTitleLogin")} />
 
                     {
-                        isSignUp ? (
-                            <>
-                                <InputField id="name" label="Name" variant="standard"
-                                    name="name"
-                                    value={formData.name || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <InputField id="username" label="Username" variant="standard"
-                                    name="username"
-                                    value={formData.username || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <InputField id="email" label="Email" variant="standard"
-                                    name="email"
-                                    type="email"
-                                    value={formData.email || ""}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </>
+                        isSignUp ?
+                            createdAccount ?
+                                <CreatedAccount />
+                                :
+                                (
+                                    <>
+                                        <InputField id="name" label={translate("nameLabel")} variant="standard"
+                                            name="name"
+                                            value={formData.name || ""}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        <InputField id="username" label={translate("usernameLabel")} variant="standard"
+                                            name="username"
+                                            value={formData.username || ""}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        <InputField id="email" label="E-mail" variant="standard"
+                                            name="email"
+                                            type="email"
+                                            value={formData.email || ""}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </>
 
-                        ) : (
-                            <InputField id="login" label="Login" variant="standard"
-                                name="login" onChange={handleChange}
-                                required value={formData.login || ""} />
-
+                                ) : (
+                                <InputField id="login" label="Login" variant="standard"
+                                    name="login" onChange={handleChange}
+                                    required value={formData.login || ""} />
+                            )
+                    }
+                    {
+                        !(createdAccount && isSignUp) && (
+                            <InputField id="password" label={translate("passwordLabel")} variant="standard"
+                                name="password"
+                                type="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
                         )
                     }
-                    <InputField id="password" label="Password" variant="standard"
-                        name="password"
-                        type="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
+
 
                     <Actions>
-                        <button type="submit" disabled={fetchTokenLoading || signUpLoading} >
-                            {isSignUp ? 'Sign Up' : 'Login'}
-                        </button>
-                        <button type="button" onClick={handleFlip} disabled={fetchTokenLoading || signUpLoading} >
-                            {isSignUp ? 'Login' : 'Sign Up'}
-                        </button>
+                        {
+                            createdAccount && isSignUp ? (
+                                <button className="created" type="button" onClick={handleFlip} disabled={fetchTokenLoading || signUpLoading} >
+                                    {isSignUp ? translate("formTitleLogin") : translate("formTitleSignup")}
+                                </button>
+                            )
+                                :
+                                (<>
+                                    <button type="submit" disabled={fetchTokenLoading || signUpLoading} >
+                                        {isSignUp ? translate("formTitleSignup") : translate("formTitleLogin")}
+                                    </button>
+                                    <button type="button" onClick={handleFlip} disabled={fetchTokenLoading || signUpLoading} >
+                                        {isSignUp ? translate("formTitleLogin") : translate("formTitleSignup")}
+                                    </button>
+                                </>)
+                        }
                     </Actions>
 
                 </Box>
 
 
-            </animated.div>
-        </Container>
+            </animated.div >
+        </Container >
     );
 };
 

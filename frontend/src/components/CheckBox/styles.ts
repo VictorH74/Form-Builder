@@ -7,7 +7,6 @@ export const CheckboxLabel = styled.label`
     width: fit-content;
     display: block;
     cursor: pointer;
-    font-weight: 400;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -15,11 +14,11 @@ export const CheckboxLabel = styled.label`
     padding-left: 30px;
     & p {
         color: #9E9D97;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         line-height: 25px;
 
         &.checked {
-            color: green;
+            color: ${({ checkedColor }: { checkedColor: string }) => checkedColor || "green"};
         }
     }
     input {
@@ -30,7 +29,7 @@ export const CheckboxLabel = styled.label`
         cursor: pointer;
     }
     &:hover input~span { background-color: #ccc; }
-    input:checked~span { background-color: green; }
+    input:checked~span { background-color: ${({ checkedColor }: { checkedColor: string }) => checkedColor || "green"}; }
     input:checked~span:after { display: block; }
 `;
 

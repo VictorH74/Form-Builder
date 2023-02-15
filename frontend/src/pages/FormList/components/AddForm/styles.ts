@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
-    margin: 20px auto;
+    margin: 30px auto;
     padding: 20px;
     display: flex;
     gap: 10px;
@@ -22,6 +22,11 @@ export const NewForm = styled.form`
         padding: 5px 10px;
         border-radius: 5px;
         cursor: pointer;
+        transition: 400ms;
+
+        &:hover {
+            scale: 105%;
+        }
     }
 `;
 
@@ -48,7 +53,7 @@ export const TitleInput = styled.input`
 
 export const Backward = styled(Link)`
     position: absolute;
-    top: -5px;
+    top: 0;
     left: 20px;
     cursor: pointer;
 `;
@@ -61,5 +66,6 @@ export const SubmitBtn = styled.button.attrs({
     margin: 10px;
     margin-left: 50%;
     translate: -50% 0;
-    width: 50%;
+    width: 40%;
+    border-radius: 10px !important;
 `;

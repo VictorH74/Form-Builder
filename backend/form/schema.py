@@ -20,8 +20,13 @@ class FormType(DjangoObjectType):
 
 
 class Query(g.ObjectType):
+    retrieve_form = g.Field(FormType, id=g.Int())
     forms = g.List(FormType)
 
+    @login_required
+    def resolve_retrieve_form(self, info, id):
+        return Form.objects.get(id=id)
+    
     @login_required
     def resolve_forms(self, info, **kwargs):
         return Form.objects.all().filter(created_by=info.context.user)

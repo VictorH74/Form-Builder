@@ -7,6 +7,7 @@ export const Container = styled.div`
     padding: 10px;
     min-width: 240px;
     position: sticky;
+    z-index: 9999;
     top: 80px;
     height: 88vh;
     translate: -100% 0;
@@ -17,7 +18,7 @@ export const Container = styled.div`
     animation-iteration-count: initial;
     animation-fill-mode: forwards;
 
-    @media screen and (max-width: 540px) {
+    @media screen and (max-width: 1000px) {
         position: fixed;
     }
 

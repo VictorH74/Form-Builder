@@ -9,6 +9,7 @@ import AddForm from "@/pages/FormList/components/AddForm";
 import LoggedLayout from "../Layout";
 import Themes from "@/pages/Themes";
 import About from "@/pages/About";
+import RetrievedForm from "@/pages/RetrievedForm";
 
 
 const router = createBrowserRouter([
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
                             {
                                 path: "",
                                 element: <FormList />
+                            },
+                            {
+                                path: ":formId",
+                                element: <RetrievedForm />
                             },
                             {
                                 path: "add",

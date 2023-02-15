@@ -2,12 +2,14 @@ import styled from "styled-components";
 
 export const Container = styled.main`
     display: flex;
+    position: relative;
     flex-direction: row;
     padding: 10px;
     max-width: 1400px;
 `;
 
 export const Content = styled.div`
+    overflow-x: hidden;
     position: relative;
     padding: 10px;
     flex: 1 1 auto;
