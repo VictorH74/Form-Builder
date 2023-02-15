@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/contexts/AuthContext";
+import FormProvider from "@/contexts/FormContext";
 import GraphQLClientProvider from "@/contexts/GraphQLContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import React from "react";
@@ -10,7 +11,9 @@ const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => (
         <AuthProvider>
             <LanguageProvider >
                 <DndProvider backend={HTML5Backend}>
-                    {children}
+                    <FormProvider>
+                        {children}
+                    </FormProvider>
                 </DndProvider>
             </LanguageProvider>
         </AuthProvider>

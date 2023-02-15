@@ -1,9 +1,9 @@
 import React from "react"
 import Checkbox from "@/components/CheckBox"
 // import Checkbox from "@src/components/Checkbox"
-import { IQuestion } from "@/pages/FormList/types"
 import { Alternatives, AlternativesContainer, Container, Label } from "../styles"
 import useLanguage from "@/hooks/UseLanguage"
+import { IQuestion } from "@/contexts/FormContext/types"
 
 interface IMultipleChoice {
     index: number

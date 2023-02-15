@@ -5,7 +5,7 @@ import { useMutation } from 'graphql-hooks';
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from './graphql_operators';
 import useGraphQlClient from '@/hooks/UseGraphQlClient';
 import { useAuth } from '@/hooks/UseAuth';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import {
     Formik,

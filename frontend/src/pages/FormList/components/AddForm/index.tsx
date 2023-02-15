@@ -1,21 +1,26 @@
 import React, { useState, useCallback, ChangeEvent, memo, useMemo, CSSProperties } from "react"
 import { Backward, Container, NewForm, QuestionComponents, QuestionsContainer, SubmitBtn, TitleInput } from "./styles"
-import { IAddForm, IQuestion } from "../../types"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MultipleChoice from "./components/MutipleChoice";
 import FillBlank from "./components/FillBlank";
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from "react-dnd";
 import useTranslate from "@/hooks/UseTranslate";
-import { useMutation } from 'graphql-hooks';
-import { CREATE_FORM_MUTATION } from "../../graphql_operators";
+import { useNavigate } from 'react-router-dom';
+import { IAddForm, IQuestion } from "@/contexts/FormContext/types";
+import useForm from "@/hooks/UseForm";
 
 
 interface DragItem {
     type: string
 }
 
-const AddForm = () => {
-    const [createForm, { loading }] = useMutation(CREATE_FORM_MUTATION)
+interface AddFormProps {
+    form?: IAddForm
+}
+
+const AddForm: React.FC<AddFormProps> = ({ form }) => {
+    const navigate = useNavigate()
+    const { addForm, creating } = useForm()
     const translate = useTranslate({
         en: {
             title: "Form title",
@@ -35,7 +40,7 @@ const AddForm = () => {
         }
     })
 
-    const [formData, setFormData] = useState<IAddForm>({
+    const [formData, setFormData] = useState<IAddForm>(form || {
         title: translate("title"),
         questions: [
             {
@@ -122,14 +127,8 @@ const AddForm = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(formData)
-        const res = await createForm({
-            variables: formData
-        })
 
-        if (res.error) {
-            return alert(res.error.graphQLErrors[0].message)
-        }
+        addForm(formData, () => navigate("../", { replace: true }))
     }
 
     const opacity = isOver ? 1 : 0.7
@@ -169,7 +168,7 @@ const AddForm = () => {
                                     : "")
                     }
                 </QuestionsContainer>
-                <SubmitBtn children="Submit" disabled={loading} />
+                <SubmitBtn children="Submit" disabled={creating} />
             </NewForm>
         </Container>
     )

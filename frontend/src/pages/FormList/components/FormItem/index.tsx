@@ -1,9 +1,9 @@
-import { IFormList } from "../../../../pages/FormList/types";
 import React from "react";
 import { ButtonContainer, Container, Title } from "./styles";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Link } from "react-router-dom";
+import { IFormList } from "@/contexts/FormContext/types";
 
 const FormItem: React.FC<IFormList> = ({ id, title }) => {
     // const navigate = use

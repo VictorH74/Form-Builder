@@ -1,4 +1,4 @@
-import { IFormList } from "./types";
+import { IFormList } from "@/contexts/FormContext/types";
 
 export const formListData: IFormList[] = [
     {id: 1, title: "Coleta de dados de clientes"},

@@ -1,7 +1,7 @@
 import React from "react"
-import { IQuestion } from "@/pages/FormList/types"
 import { Container, Label } from "../styles"
 import useLanguage from "@/hooks/UseLanguage"
+import { IQuestion } from "@/contexts/FormContext/types"
 
 interface IFillBlank {
     index: number
