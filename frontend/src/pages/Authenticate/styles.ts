@@ -114,7 +114,7 @@ export const CreatedAccount = styled.div`
         width: 35px;
         height: 55px;
         transform: rotate(45deg) translateY(-50%);
-        animation: move 400ms linear 600ms forwards;
+        animation: move 400ms linear 400ms forwards;
 
         @keyframes move {
             0% {

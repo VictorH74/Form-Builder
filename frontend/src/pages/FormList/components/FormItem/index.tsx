@@ -4,16 +4,13 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Link } from "react-router-dom";
 import { IFormList } from "@/contexts/FormContext/types";
+import useForm from "@/hooks/UseForm";
 
 const FormItem: React.FC<IFormList> = ({ id, title }) => {
-    // const navigate = use
+    const { deleteForm } = useForm()
 
-    const viewForm = async () => {
-        console.log("", id);
-    }
-
-    const deleteForm = async () => {
-        console.log("", id);
+    const handleDelete = async () => {
+        deleteForm(id)
     }
 
     return (
@@ -23,9 +20,9 @@ const FormItem: React.FC<IFormList> = ({ id, title }) => {
             </Title>
             <ButtonContainer>
                 <Link to={`${id}`} >
-                    <VisibilityIcon sx={{ color: "dodgerblue", fontSize: 30, cursor: "pointer" }} onClick={viewForm} />
+                    <VisibilityIcon sx={{ color: "dodgerblue", fontSize: 30, cursor: "pointer" }} />
                 </Link>
-                <DeleteOutlineIcon sx={{ color: "#AC2B2E", fontSize: 30, cursor: "pointer" }} onClick={deleteForm} />
+                <DeleteOutlineIcon sx={{ color: "#AC2B2E", fontSize: 30, cursor: "pointer" }} onClick={handleDelete} />
             </ButtonContainer>
         </Container>
     )

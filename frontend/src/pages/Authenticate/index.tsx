@@ -84,6 +84,7 @@ const Authentication: React.FC = () => {
         event.preventDefault();
         if (!client || !userCtx) return alert("Erro ao tentar logar!");
 
+        // CREATE ACCOUNT-------------------------------
         if (isSignUp) {
             let { name, username, email, phone, password } = formData;
 
@@ -95,11 +96,12 @@ const Authentication: React.FC = () => {
                 return alert(res.error.graphQLErrors[0].message)
             }
 
-            setCreatedAccount(true);
+            setCreatedAccount(res.data.createUser.created);
 
             return;
         }
 
+        // LOGIN----------------------------------------
         let { login, password } = formData
 
         const res = await fetchToken({

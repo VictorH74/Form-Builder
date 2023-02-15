@@ -38,7 +38,7 @@ class CreateUser(g.Mutation):
         phone = g.String()
         email = g.String(required=True)
     
-    user = g.Field(UserType)
+    created = g.Boolean()
     
     def mutate(self, info, **user_data):
         if User.objects.filter(username=user_data.get("username")).exists():
@@ -56,4 +56,4 @@ class CreateUser(g.Mutation):
         user.set_password(password)
         user.save()
                 
-        return CreateUser(user=user)
+        return CreateUser(created=True)

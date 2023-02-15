@@ -84,3 +84,24 @@ class CreateForm(g.Mutation):
         Alternative.objects.bulk_create(alternative_objs)
         
         return CreateForm(form=form)
+    
+class DeleteForm(g.Mutation):
+    class Arguments:
+        id = g.ID(required=True)
+
+    success = g.Boolean()
+
+    @login_required
+    def mutate(self, info, id):
+        try:
+            form = Form.objects.get(pk=id)
+        except Form.DoesNotExist:
+            raise Exception('Form not found.')
+        
+        user = info.context.user
+        if form.created_by != user:
+            raise Exception('you do not have permission to delete this form')
+        
+        form.delete()
+        
+        return DeleteForm(success=True)

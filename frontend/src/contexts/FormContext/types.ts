@@ -4,6 +4,7 @@ export interface IFormProvider {
     error: boolean
     formList: IFormList
     addForm: (form: IAddForm, callBack: () => void) => Promise<any>
+    deleteForm: (id: number) => void
 }
 
 export interface IFormList {

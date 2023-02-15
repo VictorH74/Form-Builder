@@ -10,8 +10,6 @@ export const SIGNUP_MUTATION = `mutation CreateUser (
   createUser (
     name: $name, username: $username, email: $email, phone: $phone, password: $password
     ) {
-      user {
-        username
-      }
+      created
     }
   }`
