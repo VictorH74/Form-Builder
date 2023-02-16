@@ -1,15 +1,38 @@
+import React, { lazy, Suspense } from 'react';
 import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import Authenticate from "@/pages/Authenticate";
-import FormList from "@/pages/FormList";
-import Home from "@/pages/Home";
-import AddForm from "@/pages/FormList/components/AddForm";
+
 import LoggedLayout from "../Layout";
-import Themes from "@/pages/Themes";
-import About from "@/pages/About";
-import RetrievedForm from "@/pages/RetrievedForm";
+import Loading from '../Loading';
+
+const Authenticate = lazy(() => import('@/pages/Authenticate'));
+const Home = lazy(() => import('@/pages/Home'));
+const FormList = lazy(() => import('@/pages/FormList'));
+const AddForm = lazy(() => import('@/pages/FormList/components/AddForm'));
+const RetrievedForm = lazy(() => import('@/pages/RetrievedForm'));
+const Themes = lazy(() => import('@/pages/Themes'));
+const About = lazy(() => import('@/pages/About'));
+
+
+// const Themes = lazy(() =>
+//     new Promise((resolve) => {
+//         setTimeout(() => resolve(import('@/pages/Themes')), 2000);
+//     })
+// );
+
+
+const CustomSuspense: React.FC<{ element: JSX.Element }> = ({ element }) => {
+    const Element = element
+    return (
+        <Suspense fallback={
+            <Loading />
+        }>
+            <Element />
+        </Suspense>
+    )
+}
 
 
 const router = createBrowserRouter([
@@ -21,30 +44,30 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: "",
-                        element: <Home />,
+                        element: <CustomSuspense element={Home} />,
                     },
                     {
                         path: "themes",
-                        element: <Themes />,
+                        element: <CustomSuspense element={Themes} />,
                     },
                     {
                         path: "about",
-                        element: <About />,
+                        element: <CustomSuspense element={About} />,
                     },
                     {
                         path: "my-forms/",
                         children: [
                             {
                                 path: "",
-                                element: <FormList />
+                                element: <CustomSuspense element={FormList} />
                             },
                             {
                                 path: ":formId",
-                                element: <RetrievedForm />
+                                element: <CustomSuspense element={RetrievedForm} />
                             },
                             {
                                 path: "add",
-                                element: <AddForm />
+                                element: <CustomSuspense element={AddForm} />
                             },
                         ]
                     },
@@ -52,7 +75,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "authentication",
-                element: <Authenticate />,
+                element: <CustomSuspense element={Authenticate} />,
             },
         ]
         // errorElement: <ErrorPage />,

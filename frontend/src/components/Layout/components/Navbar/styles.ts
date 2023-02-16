@@ -7,7 +7,7 @@ export const Container = styled.div`
     padding: 10px;
     min-width: 240px;
     position: sticky;
-    z-index: 9999;
+    z-index: 9000;
     top: 80px;
     height: 88vh;
     translate: -100% 0;

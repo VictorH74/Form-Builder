@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom"
 import { useQuery } from 'graphql-hooks';
 import { RETRIEVE_FORM_QUERY } from "./graphql_operators";
+import Loading from "@/components/Loading";
 
 const RetrievedForm = () => {
     const { formId } = useParams();
     const { loading, error, data } = useQuery(RETRIEVE_FORM_QUERY, { variables: { id: Number(formId) } })
 
     if (loading) {
-        return <div>Loading...</div>
+        return <Loading />
     }
 
     if (error) return <div>Error</div>

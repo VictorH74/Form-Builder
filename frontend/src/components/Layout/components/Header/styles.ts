@@ -3,7 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 
 export const Container = styled.header`
-    z-index: 9999 !important;
+    z-index: 9000 !important;
     background-color: var(--pinkColor);
     height: 70px;
     width: 100%;
