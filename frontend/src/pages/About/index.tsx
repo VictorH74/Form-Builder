@@ -13,12 +13,15 @@ function Readme() {
       );
       const data = await response.json();
       const markdown = atob(data.content);
-      console.log(markdown);
       setReadmeContent(marked(markdown));
     };
 
     fetchReadme();
   }, []);
+
+  useEffect(() => {
+    console.log(readmeContent)
+  }, [readmeContent]);
 
   return (
     <div dangerouslySetInnerHTML={{ __html: readmeContent }} />
