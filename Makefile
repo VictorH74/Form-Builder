@@ -38,9 +38,6 @@ db_bash:
 backend_bash:
 	docker exec -it formbuilder_api bash
 
-frontend_bash:
-	docker exec -it formbuilder_web bash
-
 envs:
 	cp .env.example .env
 

@@ -45,7 +45,7 @@ const MultipleChoice: React.FC<IMultipleChoice> = ({ index, question, addAlterna
                                 />
                                 <Checkbox
                                     className="alt-checkbox"
-                                    label={lang === "en" ? "Correct" : "Correto"}
+                                    label={lang === "en" ? "Correct" : "Correta"}
                                     checked={a.isCorrect}
                                     onChange={() => setCorrectAlternative(index, i)}
                                 />

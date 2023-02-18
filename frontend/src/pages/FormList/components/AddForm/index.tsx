@@ -144,7 +144,13 @@ const AddForm: React.FC<AddFormProps> = ({ form }) => {
                 <Question type="MC" >{translate("multipleChoiceComponent")}</Question>
             </QuestionComponents>
             <NewForm onSubmit={handleSubmit} ref={drop} style={{ backgroundColor, opacity }}>
-                <TitleInput type="text" name="title" onChange={updateFormData} value={formData.title} />
+                <TitleInput
+                    type="text"
+                    name="title"
+                    onChange={updateFormData}
+                    onFocus={(e: React.FocusEvent<HTMLInputElement>) => e.target.select()}
+                    value={formData.title}
+                />
                 <QuestionsContainer>
                     {
                         formData.questions.map((q, i) =>
@@ -192,6 +198,7 @@ const questionStyles: CSSProperties = {
     cursor: "move"
 }
 
+// Dragabble Component
 const Question: React.FC<QuestionProps> = memo(function Question({
     type,
     children,

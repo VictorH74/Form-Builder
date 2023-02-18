@@ -14,7 +14,7 @@ export const NewForm = styled.form`
     padding: 10px;
     min-width: 400px;
     border-radius: 10px;
-    box-shadow: -5px -5px 20px rgba(255,255,255,0.2), 5px 5px 25px rgba(0,0,0,0.8);
+    box-shadow: -5px -5px 20px rgba(255,255,255,0.2), 3px 3px 25px rgba(0,0,0,0.8);
     transition: 300ms;
     & button {
         background-color: var(--pinkColor);
