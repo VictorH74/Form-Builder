@@ -40,6 +40,7 @@ This project is part of my personal protfolio. If you have tips on how I can imp
 - Django Graphql Jwt
 
 <br/>
+<div id="get-started">
 
 ## Get Started
 ### Prerequisites
@@ -79,3 +80,5 @@ make migrations
 ```
 make superuser
 ```
+
+</div>

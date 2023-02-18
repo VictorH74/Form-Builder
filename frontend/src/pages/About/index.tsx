@@ -1,6 +1,7 @@
 import useLanguage from "@/hooks/UseLanguage"
 import { useEffect, useState } from 'react';
 import {marked} from 'marked';
+import { Container } from "./styles";
 
 function Readme() {
   const [readmeContent, setReadmeContent] = useState('');
@@ -24,7 +25,7 @@ function Readme() {
   }, [readmeContent]);
 
   return (
-    <div dangerouslySetInnerHTML={{ __html: readmeContent }} />
+    <Container dangerouslySetInnerHTML={{ __html: readmeContent }} />
   );
 }
 
