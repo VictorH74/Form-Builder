@@ -25,19 +25,24 @@ This project is part of my personal protfolio. If you have tips on how I can imp
 
 ## Build With
 ### Front-end
-- React
-- Vite
-- Typescript
-- React Router Dom
-- Styled Components
-- React Spring
-- Graphql hooks
-- Mui Material
+<ul>
+    <li>React</li>
+    <li>Vite</li>
+    <li>Typescript</li>
+    <li>React Router Dom</li>
+    <li>Styled Components</li>
+    <li>React Spring</li>
+    <li>Graphql hooks</li>
+    <li>Mui Material</li>
+</ul>
 
 ### Back-end
-- Django
-- Graphene Django
-- Django Graphql Jwt
+<ul>
+    <li>Django</li>
+    <li>Graphene Django</li>
+    <li>Django Graphql Jwt</li>
+</ul>
+
 
 <br/>
 

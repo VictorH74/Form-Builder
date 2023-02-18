@@ -19,6 +19,7 @@
     "formik": "^2.2.9",
     "graphql-hooks": "^6.1.0",
     "localforage": "^1.10.0",
+    "marked": "^4.2.12",
     "match-sorter": "^6.3.1",
     "module-alias": "^2.2.2",
     "react": "^18.2.0",
