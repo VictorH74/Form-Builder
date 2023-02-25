@@ -11,7 +11,7 @@ export const Container = styled.div`
     & .card {
         width: 400px;
         height: 500px;
-        background-color: var(--pinkColor);
+        background-color: var(--mainColor);
         border-radius: 10px;
         box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
         display: flex;

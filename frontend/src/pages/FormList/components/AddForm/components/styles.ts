@@ -24,14 +24,15 @@ export const Label = styled.label`
     font-size: 1.2rem;
 
     & p {
-        background-color: var(--pinkColor);
+        background-color: var(--mainColor);
         padding: 5px 10px;
         border-radius: 50%;
+        color: white;
     }
 
     & input {
         border: none;
-        border-bottom: 2px solid var(--pinkColor);
+        border-bottom: 2px solid var(--mainColor);
         outline: none;
         padding: 5px 10px;
         height: auto;

@@ -2,7 +2,7 @@ import styled, { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
     :root {
-        --pinkColor: #E11D48;
+        --mainColor: #E11D48;
         font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
         font-size: 16px;
         line-height: 24px;

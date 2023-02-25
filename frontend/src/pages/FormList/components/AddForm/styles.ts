@@ -6,35 +6,52 @@ export const Container = styled.div`
     padding: 20px;
     display: flex;
     gap: 10px;
-`;
 
-export const NewForm = styled.form`
-    flex: 1 1 auto;
-    margin: 10px;
-    padding: 10px;
-    min-width: 400px;
-    border-radius: 10px;
-    box-shadow: -5px -5px 20px rgba(255,255,255,0.2), 3px 3px 25px rgba(0,0,0,0.8);
-    transition: 300ms;
-    & button {
-        background-color: var(--pinkColor);
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: 400ms;
+    & form {
+        flex: 1 1 auto;
+        margin: 10px;
+        
+        min-width: 400px;
+        
+        color: black !important;
+        transition: 300ms;
 
-        &:hover {
-            scale: 105%;
+        & .new-form {
+            background-color: whitesmoke !important;
+            border-radius: 3px;
+            margin: auto;
+            padding: 10px;
+            /* box-shadow: -5px -5px 20px rgba(255,255,255,0.2), 3px 3px 25px rgba(0,0,0,0.8); */
+            box-shadow: 3px 3px 25px rgb(0, 0, 0);
+
+            max-width: 21cm;
+            min-height: 29.7cm;
+        }
+
+        & button {
+            background-color: var(--mainColor);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 400ms;
+
+            &:hover {
+                scale: 105%;
+            }
+        }
+
+        & input {
+            color: black;
         }
     }
 `;
 
+
 export const QuestionComponents = styled.div`
-    border: 1px dashed var(--pinkColor);
+    border: 1px dashed var(--mainColor);
     border-radius: 5px;
     width: 300px;
-    height: fit-content;
 `;
 
 export const QuestionsContainer = styled.div`
@@ -42,7 +59,6 @@ export const QuestionsContainer = styled.div`
 `;
 
 export const TitleInput = styled.input`
-    color: white;
     font-size: 1.3rem;
     border: none;
     background-color: transparent;
@@ -56,6 +72,12 @@ export const Backward = styled(Link)`
     top: 0;
     left: 20px;
     cursor: pointer;
+    transition: 300ms;
+
+    &:hover {
+        translate: -5px 0;
+        
+    }
 `;
 
 export const SubmitBtn = styled.button.attrs({

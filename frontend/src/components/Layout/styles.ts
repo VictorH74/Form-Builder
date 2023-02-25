@@ -17,7 +17,7 @@ export const Content = styled.div`
 
 export const ScrollTopBtn = styled.button`
     padding: 10px 25px;
-    background-color: var(--pinkColor);
+    background-color: var(--mainColor);
     border: none;
     border-radius: 5px;
     font-size: 1.2rem;

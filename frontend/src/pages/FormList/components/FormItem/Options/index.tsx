@@ -56,11 +56,11 @@ const Options: React.FC<{ id: number }> = ({ id }) => {
             </span>
             <div style={viewStyle} className="view op" >
                 <Link to={`${id}`} >
-                    <VisibilityIcon sx={{ color: "var(--pinkColor)", fontSize: 30, cursor: "pointer" }} />
+                    <VisibilityIcon sx={{ color: "var(--mainColor)", fontSize: 30, cursor: "pointer" }} />
                 </Link>
             </div>
             <div style={deleteStyle} className="delete op" >
-                <DeleteOutlineIcon sx={{ color: "var(--pinkColor)", fontSize: 30, cursor: "pointer" }} onClick={handleDelete} />
+                <DeleteOutlineIcon sx={{ color: "var(--mainColor)", fontSize: 30, cursor: "pointer" }} onClick={handleDelete} />
             </div>
         </Container>
     )

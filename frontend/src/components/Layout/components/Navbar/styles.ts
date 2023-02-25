@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Button from '@mui/material/Button';
 
 export const Container = styled.div`
-    background-color: var(--pinkColor);
+    background-color: var(--mainColor);
     padding: 10px;
     min-width: 240px;
     position: sticky;

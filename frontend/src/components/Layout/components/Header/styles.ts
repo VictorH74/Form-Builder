@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 export const Container = styled.header`
     z-index: 9000 !important;
-    background-color: var(--pinkColor);
+    background-color: var(--mainColor);
     height: 70px;
     width: 100%;
     position: sticky;

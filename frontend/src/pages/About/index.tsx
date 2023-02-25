@@ -1,17 +1,17 @@
 import useLanguage from "@/hooks/UseLanguage"
 import { useEffect, useState } from 'react';
-import {marked} from 'marked';
+import { marked } from 'marked';
 import { Container } from "./styles";
+import Loading from "@/components/Loading";
+
+const repositoryReadmeUrl = 'https://api.github.com/repos/VictorH74/form-builder/readme'
 
 function Readme() {
   const [readmeContent, setReadmeContent] = useState('');
 
-
   useEffect(() => {
     const fetchReadme = async () => {
-      const response = await fetch(
-        'https://api.github.com/repos/VictorH74/form-builder/readme'
-      );
+      const response = await fetch(repositoryReadmeUrl);
       const data = await response.json();
       const markdown = atob(data.content);
       setReadmeContent(marked(markdown));
@@ -24,21 +24,19 @@ function Readme() {
     console.log(readmeContent)
   }, [readmeContent]);
 
+  if (!readmeContent) return <Loading />
+
   return (
-    <Container dangerouslySetInnerHTML={{ __html: readmeContent }} />
-  );
+    <>
+      <Container dangerouslySetInnerHTML={{ __html: readmeContent }} />
+      <div>
+        <a blank="" href="https://github.com/VictorH74/form-builder">GitHub Repository</a>
+      </div>
+    </>
+  )
 }
 
 
-function About() {
-    const { language: lang } = useLanguage()
-
-    return (
-        <>
-        {/* <h1>{lang === "en" ? "About" : "Sobre"}</h1> */}
-        <Readme />
-        </>
-    )
-}
+const About = () => (<Readme />)
 
 export default About

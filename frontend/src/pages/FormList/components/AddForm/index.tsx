@@ -8,6 +8,7 @@ import useTranslate from "@/hooks/UseTranslate";
 import { useNavigate } from 'react-router-dom';
 import { IAddForm, IQuestion } from "@/contexts/FormContext/types";
 import useForm from "@/hooks/UseForm";
+import { TRANSLATION_DATA } from "./data";
 
 
 interface DragItem {
@@ -21,24 +22,8 @@ interface AddFormProps {
 const AddForm: React.FC<AddFormProps> = ({ form }) => {
     const navigate = useNavigate()
     const { addForm, creating } = useForm()
-    const translate = useTranslate({
-        en: {
-            title: "Form title",
-            questionText: "Question number [value]",
-            alterDetail: "New alternative",
-            textQuestionComponent: "Text Question",
-            textQuestionAnswer: "Answer",
-            multipleChoiceComponent: "Multiple Choice"
-        },
-        "pt-BR": {
-            title: "Título do formulário",
-            questionText: "Questão número [value]",
-            alterDetail: "Nova alternativa",
-            textQuestionComponent: "Questão de Texto",
-            textQuestionAnswer: "Resposta",
-            multipleChoiceComponent: "Múltipla Escolha"
-        }
-    })
+
+    const translate = useTranslate(TRANSLATION_DATA)
 
     const [formData, setFormData] = useState<IAddForm>(form || {
         title: translate("title"),
@@ -89,10 +74,14 @@ const AddForm: React.FC<AddFormProps> = ({ form }) => {
         setFormData(prev => ({ ...prev, [name]: value }))
     }
 
+    const updateFormQuestions = (mapFunction: (prev: IQuestion[], index?: number) => any) => {
+        let questions = formData.questions.map(mapFunction)
+        setFormData(prev => ({ ...prev, questions }))
+    }
+
     const setQuestionText = useCallback((index: number, value: string) => {
         let question: IQuestion = { ...formData.questions[index], questionText: value }
-        let questions = formData.questions.map((prevQuestion, i) => i === index ? question : prevQuestion)
-        setFormData(prev => ({ ...prev, questions }))
+        updateFormQuestions((prevQuestion, i) => i === index ? question : prevQuestion)
     }, [formData])
 
     const setAlterDetail = useCallback((QuestionIndex: number, alternativeIndex: number, value: string) => {
@@ -101,8 +90,7 @@ const AddForm: React.FC<AddFormProps> = ({ form }) => {
 
         question.alternatives = question.alternatives.map((alt, i) => i === alternativeIndex ? { ...alt, detail: value } : alt)
 
-        let questions = formData.questions.map((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
-        setFormData(prev => ({ ...prev, questions }))
+        updateFormQuestions((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
     }, [formData])
 
     const setCorrectAlternative = useCallback((QuestionIndex: number, alternativeIndex: number) => {
@@ -111,8 +99,7 @@ const AddForm: React.FC<AddFormProps> = ({ form }) => {
 
         question.alternatives = question.alternatives.map((alt, i) => ({ ...alt, isCorrect: i === alternativeIndex }))
 
-        let questions = formData.questions.map((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
-        setFormData(prev => ({ ...prev, questions }))
+        updateFormQuestions((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
     }, [formData])
 
     const addAlternative = useCallback((QuestionIndex: number) => {
@@ -121,8 +108,7 @@ const AddForm: React.FC<AddFormProps> = ({ form }) => {
 
         question.alternatives = [...question.alternatives, { detail: translate("alterDetail") }]
 
-        let questions = formData.questions.map((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
-        setFormData(prev => ({ ...prev, questions }))
+        updateFormQuestions((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
     }, [formData])
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -143,39 +129,41 @@ const AddForm: React.FC<AddFormProps> = ({ form }) => {
                 <Question type="TX" >{translate("textQuestionComponent")}</Question>
                 <Question type="MC" >{translate("multipleChoiceComponent")}</Question>
             </QuestionComponents>
-            <NewForm onSubmit={handleSubmit} ref={drop} style={{ backgroundColor, opacity }}>
-                <TitleInput
-                    type="text"
-                    name="title"
-                    onChange={updateFormData}
-                    onFocus={(e: React.FocusEvent<HTMLInputElement>) => e.target.select()}
-                    value={formData.title}
-                />
-                <QuestionsContainer>
-                    {
-                        formData.questions.map((q, i) =>
-                            q.type === "TX" ?
-                                (<FillBlank
-                                    key={q.questionNumber}
-                                    index={i}
-                                    question={q}
-                                    setQuestionText={setQuestionText}
-                                />)
-                                : q.type === "MC" ?
-                                    (<MultipleChoice
+            <form onSubmit={handleSubmit} ref={drop} style={{ backgroundColor, opacity }}>
+                <div className="new-form">
+                    <TitleInput
+                        type="text"
+                        name="title"
+                        onChange={updateFormData}
+                        onFocus={(e: React.FocusEvent<HTMLInputElement>) => e.target.select()}
+                        value={formData.title}
+                    />
+                    <QuestionsContainer>
+                        {
+                            formData.questions.map((q, i) =>
+                                q.type === "TX" ?
+                                    (<FillBlank
                                         key={q.questionNumber}
                                         index={i}
-                                        addAlternative={addAlternative}
-                                        setCorrectAlternative={setCorrectAlternative}
-                                        setQuestionText={setQuestionText}
-                                        setAlterDetail={setAlterDetail}
                                         question={q}
+                                        setQuestionText={setQuestionText}
                                     />)
-                                    : "")
-                    }
-                </QuestionsContainer>
+                                    : q.type === "MC" ?
+                                        (<MultipleChoice
+                                            key={q.questionNumber}
+                                            index={i}
+                                            addAlternative={addAlternative}
+                                            setCorrectAlternative={setCorrectAlternative}
+                                            setQuestionText={setQuestionText}
+                                            setAlterDetail={setAlterDetail}
+                                            question={q}
+                                        />)
+                                        : "")
+                        }
+                    </QuestionsContainer>
+                </div>
                 <SubmitBtn children="Submit" disabled={creating} />
-            </NewForm>
+            </form>
         </Container>
     )
 }

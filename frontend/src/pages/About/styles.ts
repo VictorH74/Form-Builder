@@ -12,10 +12,11 @@ export const Container = styled.div`
     }
 
     & ul li {
-        list-style: circle !important;
+        position: relative;
+        margin-left: 20px;
     }
 
-    & #get-started {
+    & #get-started, & img {
         display: none;
     }
 `;
