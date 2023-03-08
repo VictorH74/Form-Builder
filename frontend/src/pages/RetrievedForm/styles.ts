@@ -1,8 +1,7 @@
 import styled from "styled-components"
 
 export const Container = styled.div`
-    display: grid;
-    place-items: center;
+    position: relative;
 `;
 
 export const FormContainer = styled.div`
@@ -24,4 +23,10 @@ export const FormContainer = styled.div`
 
 export const QuestionsContainer = styled.div`
     padding: 10px;
+`;
+
+export const DeleteBtn = styled.button`
+    position: absolute;
+    top: 30px;
+    right: 30px;
 `;

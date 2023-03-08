@@ -45,7 +45,7 @@ This project is part of my personal protfolio. If you have tips on how I can imp
 ## Get Started
 ### Prerequisites
 
-To run this project you'll need have docker
+To run this project you'll need have <strong>Docker</strong> and <strong>Make</strong>
 
 ### Installing
 

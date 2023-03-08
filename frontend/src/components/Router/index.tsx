@@ -10,7 +10,7 @@ import Loading from '../Loading';
 const Authenticate = lazy(() => import('@/pages/Authenticate'));
 const Home = lazy(() => import('@/pages/Home'));
 const FormList = lazy(() => import('@/pages/FormList'));
-const AddForm = lazy(() => import('@/pages/FormList/components/AddForm'));
+const AddForm = lazy(() => import('@/pages/AddForm'));
 const RetrievedForm = lazy(() => import('@/pages/RetrievedForm'));
 const Themes = lazy(() => import('@/pages/Themes'));
 const About = lazy(() => import('@/pages/About'));

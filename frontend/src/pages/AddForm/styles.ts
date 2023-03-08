@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -65,19 +64,6 @@ export const TitleInput = styled.input`
     padding: 10px;
     width: 100%;
 
-`;
-
-export const Backward = styled(Link)`
-    position: absolute;
-    top: 0;
-    left: 20px;
-    cursor: pointer;
-    transition: 300ms;
-
-    &:hover {
-        translate: -5px 0;
-        
-    }
 `;
 
 export const SubmitBtn = styled.button.attrs({

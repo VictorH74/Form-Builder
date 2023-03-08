@@ -1,5 +1,5 @@
 import React, { useState, useCallback, ChangeEvent, memo, useMemo, CSSProperties } from "react"
-import { Backward, Container, NewForm, QuestionComponents, QuestionsContainer, SubmitBtn, TitleInput } from "./styles"
+import { Container, QuestionComponents, QuestionsContainer, SubmitBtn, TitleInput } from "./styles"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MultipleChoice from "./components/MutipleChoice";
 import FillBlank from "./components/FillBlank";
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { IAddForm, IQuestion } from "@/contexts/FormContext/types";
 import useForm from "@/hooks/UseForm";
 import { TRANSLATION_DATA } from "./data";
+import { Backward } from "@/global/styles/globalStyles";
 
 
 interface DragItem {

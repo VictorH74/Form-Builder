@@ -2,6 +2,12 @@ reset_all:
 	docker-compose down --volumes --remove-orphans
 	sudo rm -rf data
 	make build
+
+make start:
+	make build
+	make migrations 
+	echo "All ready!!"
+
 run: 
 	docker-compose up -d
 

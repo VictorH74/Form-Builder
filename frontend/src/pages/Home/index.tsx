@@ -1,5 +1,6 @@
 import ExampleForms from "./components/ExampleForms"
 import { Container, Content } from "./styles"
+import exampleForms from "@/assets/example-forms.png"
 
 const Home = () => {
     return (
@@ -17,9 +18,8 @@ const Home = () => {
                             </li>
                             <button>Get Started</button>
                         </ul>
-                        <ExampleForms />
+                        <img src={exampleForms} />
                     </div>
-
                 </section>
             </Content>
         </Container>

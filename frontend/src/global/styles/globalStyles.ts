@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from "styled-components";
+import { Link } from "react-router-dom";
 
 export const GlobalStyles = createGlobalStyle`
     :root {
@@ -31,6 +32,28 @@ export const GlobalStyles = createGlobalStyle`
         line-height: 1.1;
     }
 
+    ::-webkit-scrollbar {
+        background-color: transparent;
+        width: 10px;
+    }
+    ::-webkit-scrollbar-thumb{
+        background-color: var(--mainColor);
+        border-radius: 5px;
+    }
+
+`;
+
+export const Backward = styled(Link)`
+    position: absolute;
+    top: 0;
+    left: 20px;
+    cursor: pointer;
+    transition: 300ms;
+
+    &:hover {
+        translate: -5px 0;
+        
+    }
 `;
 
 // export const Label = styled.label`
