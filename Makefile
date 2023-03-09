@@ -6,8 +6,6 @@ reset_all:
 make start:
 	make build
 	make migrations 
-	echo "All ready!!"
-
 run: 
 	docker-compose up -d
 
