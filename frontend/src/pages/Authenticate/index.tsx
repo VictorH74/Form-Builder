@@ -4,7 +4,7 @@ import { Container } from './styles';
 import { useMutation } from 'graphql-hooks';
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from './graphql_operators';
 import useGraphQlClient from '@/hooks/UseGraphQlClient';
-import { useAuth } from '@/hooks/UseAuth';
+import useAuth from '@/hooks/UseAuth';
 import { Navigate } from 'react-router-dom';
 import useTranslate from '@/hooks/UseTranslate';
 import Signup from './form/Signup';
@@ -51,7 +51,7 @@ const Authentication: React.FC = () => {
         setTimeout(() => setIsSignUp(!isSignUp), 200)
     }, [flip, isSignUp]);
 
-    const handleSubmit = useCallback(async (values: { [key: string], values: string }, login=true) => {
+    const handleSubmit = useCallback(async (values: Record<string, string>, login = true) => {
         if (!client || !userCtx) return alert("Erro ao tentar logar!");
 
         // CREATE ACCOUNT-------------------------------

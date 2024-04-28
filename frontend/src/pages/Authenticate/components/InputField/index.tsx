@@ -2,10 +2,11 @@ import useTranslate from "@/hooks/UseTranslate";
 import React from "react";
 import { ErrorMsg, InputField } from "./styles";
 import { FormikValues, FormikErrors, FormikTouched, FormikHandlers } from 'formik';
+import { signinFields } from "../../data";
 
 
 interface Props {
-    fieldArray: { [key: string]: string }[]
+    fieldArray: (typeof signinFields)
     handleChange: FormikHandlers<string>['handleChange']
     handleBlur: FormikHandlers<string>['handleBlur']
 

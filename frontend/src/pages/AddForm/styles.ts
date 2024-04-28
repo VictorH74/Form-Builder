@@ -11,7 +11,8 @@ export const Container = styled.div`
         margin: 10px;
         
         min-width: 400px;
-        
+        max-width: 100%;
+                
         color: black !important;
         transition: 300ms;
 

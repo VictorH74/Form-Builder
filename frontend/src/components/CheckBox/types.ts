@@ -5,7 +5,7 @@ export interface ICheckmark {
 
 export interface ICheckboxProps {
     checked?: boolean;
-    label: string;
     className?: string;
     onChange: () => void;
+    rounded?: boolean;
 }

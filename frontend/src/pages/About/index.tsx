@@ -1,4 +1,3 @@
-import useLanguage from "@/hooks/UseLanguage"
 import { useEffect, useState } from 'react';
 import { marked } from 'marked';
 import { Container } from "./styles";
@@ -30,7 +29,7 @@ function Readme() {
     <>
       <Container dangerouslySetInnerHTML={{ __html: readmeContent }} />
       <div>
-        <a blank="" href="https://github.com/VictorH74/form-builder">GitHub Repository</a>
+        <a href="https://github.com/VictorH74/form-builder">GitHub Repository</a>
       </div>
     </>
   )

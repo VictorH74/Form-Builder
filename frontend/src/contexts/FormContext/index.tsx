@@ -2,9 +2,9 @@ import React, { createContext, useState, useEffect } from "react"
 import { CREATE_FORM_MUTATION, DELETE_FORM_MUTATION, FORMS_QUERY } from "./graphql_operators";
 import { IFormProvider, IFormList, IAddForm } from "./types";
 import { useManualQuery, useMutation } from 'graphql-hooks';
-import { useAuth } from "@/hooks/UseAuth";
+import useAuth from "@/hooks/UseAuth";
 
-export const FormContext = createContext<IFormProvider>(null);
+export const FormContext = createContext<IFormProvider | null>(null);
 
 const FormProvider: React.FC<{ children: JSX.Element }> = ({ children }) => {
     const auth = useAuth()
@@ -13,7 +13,7 @@ const FormProvider: React.FC<{ children: JSX.Element }> = ({ children }) => {
     const [formsQuery] = useManualQuery(FORMS_QUERY)
     const [createForm, { loading: creating }] = useMutation(CREATE_FORM_MUTATION)
     const [deleteMutation, { loading: deleting }] = useMutation(DELETE_FORM_MUTATION)
-    const [formList, setFormList] = useState<IFormList>([])
+    const [formList, setFormList] = useState<IFormList[]>([])
 
     useEffect(() => {
         const fetchForms = async () => {
@@ -37,7 +37,7 @@ const FormProvider: React.FC<{ children: JSX.Element }> = ({ children }) => {
             variables: form
         })
 
-        if (res.error) {
+        if (res.error?.graphQLErrors) {
             return alert(res.error.graphQLErrors[0].message)
         }
         
@@ -48,7 +48,7 @@ const FormProvider: React.FC<{ children: JSX.Element }> = ({ children }) => {
     const deleteForm = async (id: number) => {
         const res = await deleteMutation({ variables: { id } })
 
-        if (res.error) {
+        if (res.error?.graphQLErrors) {
             return alert(res.error.graphQLErrors[0].message)
         }
 

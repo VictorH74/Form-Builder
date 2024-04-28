@@ -1,7 +1,5 @@
 import React from "react"
-import Checkbox from "@/components/CheckBox"
 import { Alternatives, AlternativesContainer, Container, Label } from "../styles"
-import useLanguage from "@/hooks/UseLanguage"
 import { IQuestion } from "@/contexts/FormContext/types"
 
 interface IMultipleChoice {
@@ -9,7 +7,6 @@ interface IMultipleChoice {
 }
 
 const MultipleChoice: React.FC<IMultipleChoice> = ({ question }) => {
-    const { language: lang } = useLanguage()
 
     return (
         <Container>

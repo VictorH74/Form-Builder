@@ -9,7 +9,7 @@ import Fields from '../components/InputField';
 import CreatedAccount from '../components/CreatedAccount';
 
 interface Props {
-    handleSubmit: (values: { [key: string], values: string }, login: boolean) => void;
+    handleSubmit: (values: Record<string, string>, login: boolean) => void;
     createdAccount: boolean;
     signUpLoading: boolean;
     handleFlip: () => void;

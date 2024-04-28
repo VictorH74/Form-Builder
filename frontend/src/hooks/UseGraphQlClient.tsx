@@ -1,6 +1,10 @@
 import { ClientContext } from "graphql-hooks";
 import { useContext } from "react";
 
-const useGraphQlClient = () => useContext(ClientContext)
+export default function useGraphQlClient() {
+    const context = useContext(ClientContext)
 
-export default useGraphQlClient
+    if (!context) throw Error("useGraphQlClient must be used within a GraphQLProvider")
+
+        return context
+}

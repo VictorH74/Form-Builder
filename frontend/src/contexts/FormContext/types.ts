@@ -2,7 +2,7 @@ export interface IFormProvider {
     loading: boolean
     creating: boolean
     error: boolean
-    formList: IFormList
+    formList: IFormList[]
     addForm: (form: IAddForm, callBack: () => void) => Promise<any>
     deleteForm: (id: number) => void
 }

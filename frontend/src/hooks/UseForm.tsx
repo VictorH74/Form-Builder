@@ -1,6 +1,10 @@
 import { FormContext } from "@/contexts/FormContext";
 import { useContext } from "react";
 
-const useForm = () => useContext(FormContext);
+export default function useForm() {
+    const context = useContext(FormContext)
 
-export default useForm
+    if (!context) throw Error("useForm must be used within a FormProvider")
+
+    return context;
+};

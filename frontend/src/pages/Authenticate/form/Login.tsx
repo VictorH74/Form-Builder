@@ -8,7 +8,7 @@ import { Actions, Form, Title } from '../styles';
 import Fields from '../components/InputField';
 
 interface Props {
-    handleSubmit: (values: { [key: string], values: string }) => void;
+    handleSubmit: (values: Record<string, string>) => void;
     fetchTokenLoading: boolean;
     handleFlip: () => void;
     titleTranslate: { login: string, signup: string };

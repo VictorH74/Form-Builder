@@ -1,6 +1,10 @@
 import { LanguageCtx } from "@/contexts/LanguageContext";
 import { useContext } from "react";
 
-const useLanguage = () => useContext(LanguageCtx)
+export default function useLanguage() {
+    const context = useContext(LanguageCtx)
 
-export default useLanguage
+    if (!context) throw Error ("useLanguage must be used within a LanguageProvider")
+
+    return context;
+}

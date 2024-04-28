@@ -5,7 +5,7 @@ export const Container = styled.main`
     position: relative;
     flex-direction: row;
     padding: 10px;
-    max-width: 1400px;
+    /* max-width: 1400px; */
 `;
 
 export const Content = styled.div`

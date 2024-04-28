@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React from "react";
 import Header from "./components/Header";
 import { Container, Content, ScrollTopBtn } from "./styles";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
@@ -12,8 +12,8 @@ const loginRequiredPath = [
 
 const LoggedLayout = () => {
     const { language: lang } = useLanguage()
-    const [showNav, setShowNav] = useState(false)
-    const [showScrollTopBtn, setShowBtn] = useState(false)
+    const [showNav, setShowNav] = React.useState(false)
+    const [showScrollTopBtn, setShowBtn] = React.useState(false)
     const userCtx = useAuth()
 
     let location = useLocation();
@@ -27,7 +27,7 @@ const LoggedLayout = () => {
 
     const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" })
 
-    useEffect(() => {
+    React.useEffect(() => {
         document.addEventListener("scroll", handleScroll)
         return () => document.removeEventListener("scroll", handleScroll)
     }, [])

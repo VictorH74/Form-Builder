@@ -6,7 +6,7 @@ import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+const Providers: React.FC<{ children: React.ReactElement }> = ({ children }) => (
     <GraphQLClientProvider>
         <AuthProvider>
             <LanguageProvider >

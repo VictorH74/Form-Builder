@@ -1,4 +1,3 @@
-import ExampleForms from "./components/ExampleForms"
 import { Container, Content } from "./styles"
 import exampleForms from "@/assets/example-forms.png"
 import { useNavigate } from 'react-router-dom';
