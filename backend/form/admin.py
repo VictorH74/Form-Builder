@@ -1,22 +1,29 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from .models import *
+import nested_admin
 
 User = get_user_model()
 
-
-class AlternativeInline(admin.TabularInline):
+class AlternativeInline(nested_admin.NestedTabularInline):
     model = Alternative
-    extra = 2
-
-class QuestionInline(admin.TabularInline):
-    model = Question
     extra = 0
-    inlines = [AlternativeInline, ]
-    fields = [("question_number", "type"), "question_text"]
 
 
-class FormAdmin(admin.ModelAdmin):
+class ImageInline(nested_admin.NestedTabularInline):
+    model = Image
+    extra = 0
+    fields = [("image", "alt_name"), ("position", "area")]
+
+
+class QuestionInline(nested_admin.NestedTabularInline):
+    model = Question
+    extra = 1
+    inlines = [AlternativeInline, ImageInline]
+    fields = [("number", "type"), ("statement", "open_question_answer")]
+
+
+class FormAdmin(nested_admin.NestedModelAdmin):
     list_display = (
         "title",
         "created_by",
@@ -26,17 +33,9 @@ class FormAdmin(admin.ModelAdmin):
     # list_filter = ("create_by", "title")
     search_fields = ("create_by", "title")
 
-    fields = ['created_by', 'title', ]
+    fields = ['created_by', 'title', 'authorized_users']
 
     inlines = [QuestionInline,]
-
-    def add_view(self, request, form_url='', extra_context=None):
-        try:
-            return super(FormAdmin, self).add_view(
-                request, form_url, extra_context
-            )
-        except Exception as e:
-            print(e)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "created_by":

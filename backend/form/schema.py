@@ -55,13 +55,16 @@ class CreateForm(g.Mutation):
 
     form = g.Field(FormType)
 
+    
     @login_required
     def mutate(self, info, form_data):
         questions_data = form_data.pop('questions')
+        # TODO: ? Adicionar usuários autorizado
         form = Form.objects.create(**form_data, created_by=info.context.user)
 
         question_objs = []
         alternative_objs = []
+        image_objs = []
         
         for question_data in questions_data:
             question_number = question_data.get('question_number')
@@ -71,6 +74,10 @@ class CreateForm(g.Mutation):
             alternatives_data = None
             if 'alternatives' in question_data:
                 alternatives_data = question_data.pop('alternatives')
+
+            images_data = None
+            if 'images' in question_data:
+                images_data = question_data.pop('images')
                 
             question = Question(form=form, **question_data)
             
@@ -80,8 +87,13 @@ class CreateForm(g.Mutation):
                 for alternative in alternatives_data:
                     alternative_objs.append(Alternative(question=question, **alternative))
 
+            if images_data:
+                for image in images_data:
+                    image_objs.append(Image(question=question, **image))
+
         Question.objects.bulk_create(question_objs)
         Alternative.objects.bulk_create(alternative_objs)
+        Image.objects.bulk_create(image_objs)
         
         return CreateForm(form=form)
     
