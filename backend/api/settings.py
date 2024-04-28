@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 3 party apps
+    'nested_admin',
     'drf_yasg',
     "corsheaders",
     "graphene_django",

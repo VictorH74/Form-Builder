@@ -68,7 +68,7 @@ python -c "import secrets; print(secrets.token_urlsafe())"
 ### Building and running containers
 **Make sure you are in the project folder**
 ```
-make build
+sudo make build
 ```
 
 ### Backend migrations

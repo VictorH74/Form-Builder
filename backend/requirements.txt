@@ -10,3 +10,5 @@ django-graphql-jwt
 drf-yasg
 python-dotenv
 psycopg2
+Pillow
+django-nested-admin
