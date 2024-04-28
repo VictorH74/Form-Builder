@@ -13,24 +13,40 @@ export const Container = styled.div`
 
 export const AlternativesContainer = styled.div`
     padding-left: 40px;
+    position: relative;
 `;
 
+interface ILabel {
+    shape: string;
+    shapeType: string;
+    shapeSize: number;
+    shapeColor: string;
+    numberColor: string;
+    statementColor: string;
+}
 
 export const Label = styled.label`
     display: flex;
     flex-direction: row;
-    align-items: center;
     gap: 10px;
     font-size: 1.2rem;
 
     & p {
-        background-color: var(--mainColor);
-        padding: 5px 10px;
-        border-radius: 50%;
-        color: white;
+        display: grid;
+        place-items: center;
+        height: ${({shapeSize}:ILabel) => `${shapeSize}px`}; /* 25 - 50 */
+        aspect-ratio: 1/1;
+        /* padding: 5px 10px; */
+        background-color: ${({shapeColor, shapeType}: ILabel) => shapeType === "filled" && shapeColor ? `${shapeColor}` : "transparent"};
+        /* padding: 5px; */
+        border: ${({shapeType, shapeColor}: ILabel) => shapeType === "outline" ? `1px solid ${shapeColor}` : "none"};
+        border-radius: ${({shape}: ILabel) => shape === "rounded" ? "50%" : shape === "square" ? "5px" : "none"};
+        /* border-radius: 50%; */
+        color: ${({numberColor}: ILabel) => numberColor ? `${numberColor}` : "white"};
     }
 
-    & input {
+    & textarea {
+        color: ${({statementColor}: ILabel) => statementColor ? `${statementColor}` : "#000000"};
         border: none;
         border-bottom: 2px solid var(--mainColor);
         outline: none;
@@ -48,7 +64,7 @@ export const Label = styled.label`
 export const Alternatives = styled.ol`
     & li {
         margin: 5px 0;
-        position: relative;
+        /* position: relative; */
         margin-left: 20px;
 
         & .inner-li {

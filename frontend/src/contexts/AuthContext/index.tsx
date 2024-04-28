@@ -26,7 +26,11 @@ export const AuthProvider: React.FC<{ children: JSX.Element }> = ({ children }) 
     const [fetchUser] = useManualQuery(ME)
 
     useEffect(() => {
-        const init = async () => {
+        // prev 
+        setUser({name: "Test", email: "test@test.com", phone: "999999999", username: "test@123"})
+        return
+
+        (async () => {
             let recoveredToken = localStorage.getItem("form_builder-token")
 
             if (!recoveredToken || !client) return;
@@ -34,12 +38,11 @@ export const AuthProvider: React.FC<{ children: JSX.Element }> = ({ children }) 
             client.setHeader("Authorization", `JWT ${recoveredToken}`)
             let res = await fetchUser()
             setUser(res.data.me)
-        }
-
-        init()
+        })()
     }, [])
 
     const logout = () => {
+        return // prev
         client?.setHeader("Authorization", null)
         setUser(undefined)
         localStorage.removeItem("form_builder-token")
@@ -48,7 +51,8 @@ export const AuthProvider: React.FC<{ children: JSX.Element }> = ({ children }) 
     const providerValue: IProviderValue = {
         user,
         fetchUser,
-        authenticated: !!user,
+        // authenticated: !!user,
+        authenticated: true, // temp
         setUser,
         logout
     }

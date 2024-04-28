@@ -1,125 +1,42 @@
-import React, { useState, useCallback, ChangeEvent, memo, useMemo, CSSProperties } from "react"
+import React, { memo, useMemo, CSSProperties } from "react"
 import { Container, QuestionComponents, QuestionsContainer, SubmitBtn, TitleInput } from "./styles"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import MultipleChoice from "./components/MutipleChoice";
-import FillBlank from "./components/FillBlank";
-import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from "react-dnd";
-import useTranslate from "@/hooks/UseTranslate";
-import { useNavigate } from 'react-router-dom';
-import { IAddForm, IQuestion } from "@/contexts/FormContext/types";
-import useForm from "@/hooks/UseForm";
-import { TRANSLATION_DATA } from "./data";
+import { DragSourceMonitor, useDrag, } from "react-dnd";
+import { IAddForm } from "@/contexts/FormContext/types";
 import { Backward } from "@/global/styles/globalStyles";
+import createQuestionComponent, { multipleChoiceTypes } from "./components/questions";
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import useAddForm from "./useAddForm";
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import useAddFormCtx from "@/hooks/UseAddFormCtx";
+import Slider from '@mui/material/Slider';
+import Switch from '@mui/material/Switch';
+import MenuIcon from '@mui/icons-material/Menu';
 
-
-interface DragItem {
-    type: string
-}
-
-interface AddFormProps {
+export interface AddFormProps {
     form?: IAddForm
 }
 
+export const quenstionOtherShapes = [
+    " ",
+    ".",
+    "°",
+    "º",
+    " |",
+    " -",
+    " >",
+]
+
 const AddForm: React.FC<AddFormProps> = ({ form }) => {
-    const navigate = useNavigate()
-    const { addForm, creating } = useForm()
+    const hook = useAddForm(form);
+    const addFormCtx = useAddFormCtx();
 
-    const translate = useTranslate(TRANSLATION_DATA)
-
-    const [formData, setFormData] = useState<IAddForm>(form || {
-        title: translate("title"),
-        questions: [
-            {
-                questionNumber: 1,
-                questionText: translate("questionText", 1),
-                type: "TX",
-            },
-        ]
-    })
-
-    const addQuestion = (type: string) => {
-        let keys = ["questionNumber", "questionText", "type", "alternatives"]
-        let questionNumber = formData.questions.length + 1
-        let question: IQuestion = { questionNumber, questionText: translate("questionText", questionNumber), type: "" }
-
-        keys.forEach(key => {
-            if (key === "type") question[key] = type
-            if (key === "alternatives" && type === "MC") question[key] = [
-                { detail: "Alternative 1", isCorrect: true },
-                { detail: "Alternative 2" },
-            ]
-        })
-        let prevQuestions = formData.questions
-        setFormData(prev => ({ ...prev, questions: [...prevQuestions, question] }))
-    }
-
-    const [{ isOver, canDrop }, drop] = useDrop(
-        () => ({
-            accept: ["TX", "MC"],
-            drop(_item: DragItem, monitor) {
-                let type = String(monitor.getItemType())
-                if (!type) return;
-                addQuestion(type)
-                return undefined
-            },
-            collect: (monitor: DropTargetMonitor) => ({
-                isOver: monitor.isOver(),
-                canDrop: monitor.canDrop(),
-            }),
-        }),
-        [addQuestion],
-    )
-
-    const updateFormData = (e: ChangeEvent<HTMLInputElement>) => {
-        let { name, value } = e.currentTarget
-        setFormData(prev => ({ ...prev, [name]: value }))
-    }
-
-    const updateFormQuestions = (mapFunction: (prev: IQuestion[], index?: number) => any) => {
-        let questions = formData.questions.map(mapFunction)
-        setFormData(prev => ({ ...prev, questions }))
-    }
-
-    const setQuestionText = useCallback((index: number, value: string) => {
-        let question: IQuestion = { ...formData.questions[index], questionText: value }
-        updateFormQuestions((prevQuestion, i) => i === index ? question : prevQuestion)
-    }, [formData])
-
-    const setAlterDetail = useCallback((QuestionIndex: number, alternativeIndex: number, value: string) => {
-        let question = formData.questions[QuestionIndex]
-        if (!question.alternatives) return;
-
-        question.alternatives = question.alternatives.map((alt, i) => i === alternativeIndex ? { ...alt, detail: value } : alt)
-
-        updateFormQuestions((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
-    }, [formData])
-
-    const setCorrectAlternative = useCallback((QuestionIndex: number, alternativeIndex: number) => {
-        let question = formData.questions[QuestionIndex]
-        if (!question.alternatives) return;
-
-        question.alternatives = question.alternatives.map((alt, i) => ({ ...alt, isCorrect: i === alternativeIndex }))
-
-        updateFormQuestions((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
-    }, [formData])
-
-    const addAlternative = useCallback((QuestionIndex: number) => {
-        let question = formData.questions[QuestionIndex]
-        if (!question.alternatives) return;
-
-        question.alternatives = [...question.alternatives, { detail: translate("alterDetail") }]
-
-        updateFormQuestions((prevQuestion, i) => i === QuestionIndex ? question : prevQuestion)
-    }, [formData])
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        addForm(formData, () => navigate("../", { replace: true }))
-    }
-
-    const opacity = isOver ? 1 : 0.7
-    const backgroundColor = canDrop ? "#6969694b" : "transparent"
 
     return (
         <Container>
@@ -127,43 +44,162 @@ const AddForm: React.FC<AddFormProps> = ({ form }) => {
                 <ArrowBackIcon sx={{ fontSize: 50, color: "dodgerblue" }} />
             </Backward>
             <QuestionComponents>
-                <Question type="TX" >{translate("textQuestionComponent")}</Question>
-                <Question type="MC" >{translate("multipleChoiceComponent")}</Question>
+
+                <ListItemButton onClick={hook.handleOpenQuestionTypesClick}>
+                    <ListItemText primary="Question Types" />
+                    {hook.openQuestionTypes ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={hook.openQuestionTypes} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <Question type="TX" >{hook.translate("textQuestionComponent")}</Question>
+                        <Question type="MC" >{hook.translate("multipleChoiceComponent")}</Question>
+                        <Question type="MS" >{hook.translate("multipleSelectionComponent")}</Question>
+                    </List>
+                </Collapse>
+
+                <ListItemButton onClick={hook.handleOpenQuestionSettingsClick}>
+                    <ListItemText primary="Question Settings" />
+                    {hook.openQuestionSettings ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={hook.openQuestionSettings} timeout="auto" unmountOnExit>
+                    <div style={{ display: "grid", gap: 10, padding: "5px 10px" }}>
+
+                        <div style={{ display: "flex", overflow: "hidden", borderRadius: 10 }}>
+                            <button onClick={() => addFormCtx.setQuestionNumberShape("rounded")} style={{ width: "100%", padding: 15, backgroundColor: addFormCtx.questionNumberShape === "rounded" ? "dodgerblue" : "transparent", border: "none", outline: "none" }}>Rounded</button>
+
+                            <button onClick={() => addFormCtx.setQuestionNumberShape("square")} style={{ width: "100%", padding: 15, backgroundColor: addFormCtx.questionNumberShape === "square" ? "dodgerblue" : "transparent", border: "none" }}>Square</button>
+                        </div>
+
+                        <div style={{ padding: "0 5px" }}>
+                            <p>Shape size</p>
+                            <Slider defaultValue={30} min={25} max={40} aria-label="Default" onChange={(_, newValue) => hook.debounce(() => addFormCtx.setQuestionNumberShapeSize(newValue as number))} valueLabelDisplay="auto" />
+                        </div>
+
+                        <div style={{ display: "flex", overflow: "hidden", borderRadius: 10 }}>
+                            <button onClick={() => addFormCtx.setQuestionNumberShapeType("filled")} style={{ width: "100%", padding: 10, backgroundColor: addFormCtx.questionNumberShapeType === "filled" ? "dodgerblue" : "transparent", border: "none", outline: "none" }}>Filled</button>
+
+                            <button onClick={() => addFormCtx.setQuestionNumberShapeType("outline")} style={{ width: "100%", backgroundColor: addFormCtx.questionNumberShapeType === "outline" ? "dodgerblue" : "transparent", padding: 10, border: "none" }}>Outline</button>
+
+                            <button onClick={hook.handleMenu} style={{ width: "100%", backgroundColor: quenstionOtherShapes.includes(addFormCtx.questionNumberShapeType) ? "dodgerblue" : "transparent", padding: 10, display: "flex", gap: 5, alignItems: "center", justifyContent: "center", border: "none" }}>Others <MenuIcon /></button>
+                        </div>
+
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={hook.anchorEl}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(hook.anchorEl)}
+                            onClose={hook.handleClose}
+                        >
+                            {quenstionOtherShapes.map(value => (
+                                <MenuItem key={value} onClick={() => {
+                                    addFormCtx.setQuestionNumberShapeType(value)
+                                    hook.handleClose();
+                                }}>1{value} Statement</MenuItem>
+                            ))}
+                        </Menu>
+
+                        <div />
+
+                        <div style={{ display: "flex" }}>
+                            <label htmlFor="input-shape-color" style={{ width: "100%" }}>Shape Color</label>
+                            <input
+                                type="color"
+                                value={addFormCtx.questionNumberShapeColor}
+                                onChange={e => {
+                                    const newColor = e.currentTarget.value
+
+                                    hook.debounce(() => addFormCtx.setQuestionNumberShapeColor(newColor))
+                                }}
+                                name=""
+                                id="input-shape-color"
+                            />
+                            <input
+                                type="color"
+                                value={addFormCtx.questionNumberColor}
+
+                                onChange={e => {
+                                    const newColor = e.currentTarget.value
+
+                                    hook.debounce(() => addFormCtx.setQuestionNumberColor(newColor))
+                                }}
+                                name=""
+                                id="input-number-color"
+                            />
+                        </div>
+
+                        <div style={{ display: "flex" }}>
+                            <label htmlFor="input-question-text-color" style={{ width: "100%" }}>Text Color</label>
+                            <input
+                                value={addFormCtx.questionStatementColor}
+                                type="color"
+                                onChange={e => {
+                                    const newColor = e.currentTarget.value
+
+                                    hook.debounce(() => addFormCtx.setQuestionStatementColor(newColor))
+                                }}
+                                name=""
+                                id="input-question-text-color"
+                            />
+                        </div>
+                    </div>
+                </Collapse>
+
+                <ListItemButton onClick={hook.handleOpenAlternativeSettings}>
+                    <ListItemText primary="Alternative Settings" />
+                    {hook.openAlternativeSettings ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={hook.openAlternativeSettings} timeout="auto" unmountOnExit>
+                    <div style={{ display: "grid", gap: 10, padding: "5px 10px" }}>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <label htmlFor="show-markers-input" style={{ width: "100%" }}>Show markers</label>
+                            <Switch id="show-markers-input" {...{ inputProps: { 'aria-label': 'Switch demo' } }} defaultChecked />
+                        </div>
+
+                        <button style={{ padding: 5, display: "flex", gap: 5, alignItems: "center", justifyContent: "center", backgroundColor: "dodgerblue", borderRadius: 5, border: "none" }}>Markers <MenuIcon /></button>
+
+                        <button style={{ padding: 5, display: "flex", gap: 5, alignItems: "center", justifyContent: "center", backgroundColor: "dodgerblue", borderRadius: 5, border: "none" }}>Checkmarks <MenuIcon /></button>
+
+                    </div>
+                </Collapse>
+
             </QuestionComponents>
-            <form onSubmit={handleSubmit} ref={drop} style={{ backgroundColor, opacity }}>
+            <form onSubmit={hook.handleSubmit} ref={hook.drop} style={{ backgroundColor: hook.backgroundColor, opacity: hook.opacity }}>
                 <div className="new-form">
                     <TitleInput
                         type="text"
                         name="title"
-                        onChange={updateFormData}
+                        onChange={hook.updateFormData}
                         onFocus={(e: React.FocusEvent<HTMLInputElement>) => e.target.select()}
-                        value={formData.title}
+                        value={hook.formData.title}
                     />
                     <QuestionsContainer>
                         {
-                            formData.questions.map((q, i) =>
-                                q.type === "TX" ?
-                                    (<FillBlank
-                                        key={q.questionNumber}
-                                        index={i}
-                                        question={q}
-                                        setQuestionText={setQuestionText}
-                                    />)
-                                    : q.type === "MC" ?
-                                        (<MultipleChoice
-                                            key={q.questionNumber}
-                                            index={i}
-                                            addAlternative={addAlternative}
-                                            setCorrectAlternative={setCorrectAlternative}
-                                            setQuestionText={setQuestionText}
-                                            setAlterDetail={setAlterDetail}
-                                            question={q}
-                                        />)
-                                        : "")
+                            hook.formData.questions.map((q, i) => createQuestionComponent(
+                                q.type,
+                                {
+                                    index: i,
+                                    question: q,
+                                    setQuestionText: hook.setQuestionText
+                                },
+                                multipleChoiceTypes.includes(q.type) ? {
+                                    addAlternative: hook.addAlternative,
+                                    setAlterDetail: hook.setAlterDetail,
+                                    setCorrectAlternative: q.type === "MC" ? hook.setCorrectMCAlternative : hook.setCorrectMSAlternative
+                                } : null
+                            )
+                            )
                         }
                     </QuestionsContainer>
                 </div>
-                <SubmitBtn children="Submit" disabled={creating} />
+                <SubmitBtn children="Submit" disabled={hook.creating} />
             </form>
         </Container>
     )
@@ -182,7 +218,7 @@ const questionStyles: CSSProperties = {
     padding: '0.5rem',
     margin: '0.5rem',
     backgroundColor: "dodgerblue",
-    borderRadius: 20,
+    borderRadius: 5,
     textAlign: "center",
     cursor: "move"
 }

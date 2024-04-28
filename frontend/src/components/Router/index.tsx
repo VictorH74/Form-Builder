@@ -6,6 +6,8 @@ import {
 
 import LoggedLayout from "../Layout";
 import Loading from '../Loading';
+import { AddFormProps } from '@/pages/AddForm';
+import AddFormContextProvider from '@/contexts/AddFormContext';
 
 const Authenticate = lazy(() => import('@/pages/Authenticate'));
 const Home = lazy(() => import('@/pages/Home'));
@@ -23,7 +25,7 @@ const About = lazy(() => import('@/pages/About'));
 // );
 
 
-const CustomSuspense: React.FC<{ element: JSX.Element }> = ({ element }) => {
+const CustomSuspense: React.FC<{ element: React.LazyExoticComponent<() => JSX.Element> | React.LazyExoticComponent<React.FC<AddFormProps>> }> = ({ element }) => {
     const Element = element
     return (
         <Suspense fallback={
@@ -67,7 +69,7 @@ const router = createBrowserRouter([
                             },
                             {
                                 path: "add",
-                                element: <CustomSuspense element={AddForm} />
+                                element: <AddFormContextProvider><CustomSuspense element={AddForm} /></AddFormContextProvider>
                             },
                         ]
                     },

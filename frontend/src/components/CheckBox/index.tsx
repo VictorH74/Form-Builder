@@ -1,16 +1,20 @@
 import React from "react";
-import { CheckboxLabel, Checkmark } from "./styles";
+import { CheckboxLabel } from "./styles";
 import { ICheckboxProps } from "./types";
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
-const Checkbox: React.FC<ICheckboxProps> = ({ checked, label, className, onChange }) => (
+const Checkbox: React.FC<ICheckboxProps> = ({ checked, className, onChange, rounded }) => (
     <CheckboxLabel className={className || ""} checkedColor="dodgerblue" >
-        <p className={checked ? "checked" : ""} >{label}</p>
         <input
             type="checkbox"
             onChange={onChange}
             checked={checked}
         />
-        <Checkmark borderRadius="50px" />
+        <div style={{position: "absolute", left: 0}}>
+            {checked ? <CheckIcon sx={{color: "#1E90FF"}} /> : <CloseIcon />}
+        </div>
+        
     </CheckboxLabel>
 )
 
